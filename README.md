@@ -2,7 +2,7 @@
 
 ## Téma
 
-Tady bude krátký a úderný popis o účelu, významu, funkcionalitě...
+Téma bude karetní hra Bang!. Hra pro 4-7 hráčů.
 
 ## Odkazy pro vývoj
 
