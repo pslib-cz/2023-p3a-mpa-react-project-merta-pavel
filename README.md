@@ -2,7 +2,7 @@
 
 ## Téma
 
-Téma bude karetní hra Bang!. Hra pro 4-7 hráčů.
+Téma bude karetní hra Střelené kachny.
 
 ## Odkazy pro vývoj
 
