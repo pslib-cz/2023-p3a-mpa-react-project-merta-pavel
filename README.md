@@ -2,7 +2,7 @@
 
 ## Téma
 
-Tady bude krátký a úderný popis o účelu, významu, funkcionalitě...
+Téma bude karetní hra Střelené kachny.
 
 ## Odkazy pro vývoj
 
