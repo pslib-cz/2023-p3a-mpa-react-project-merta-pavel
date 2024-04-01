@@ -1,41 +1,10 @@
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import {Player} from './types';
+import {AppRoute} from './AppRoute';
+import { FC } from 'react'; 
 import './App.css';
 
-function App() {
-  return (
-    <Router>
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Play</Link>
-            </li>
-            <li>
-              <Link to="/quit">Quit</Link>
-            </li>
-          </ul>
-        </nav>
-
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/users" element={<Users />} />
-        </Routes>
-      </div>
-    </Router>
-  );
-}
-
-function Home() {
-  return <h2>Home</h2>;
-}
-
-function About() {
-  return <h2>About</h2>;
-}
-
-function Users() {
-  return <h2>Users</h2>;
+const App = () => {
+  <AppRoute />
 }
 
 export default App;
