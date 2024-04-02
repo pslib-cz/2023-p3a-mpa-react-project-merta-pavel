@@ -2,11 +2,13 @@ export type GameState = {
     players: Player[],
     currentPlayer: number,
     deck: Card[],
+    target: number[],
     discardPile: Card[],
     turn: number,
     winner: number,
     gameover: boolean,
     winnerMessage: string,
+    goal: number,
 }
 
 export type Card = {
@@ -15,11 +17,13 @@ export type Card = {
     type: string,
     value: number,
     img: string,
+    position: number,
 }
 
 export type Player = {
     deck: ActionCard[],
     kachna: Card[],
+    hand: Card[],
 }
 
 export enum Action {
@@ -40,8 +44,20 @@ export enum Action {
     TURBOKACHNA = "TURBOKACHNA",
     VYBER_CILE = "VYBER_CILE",
     VYBER_KARTY = "VYBER_KARTY",
+    PLAY_CARD = "PLAY_CARD",
 }
 
 export type ActionCard = Card & {
     action: Action, 
 }
+
+export interface ActionType<T = any> {
+    type: string;
+    payload?: T;
+  }
+  
+  export interface ActionPayload {
+    playerIndex?: number;
+    cardIndex?: number;
+    actionCard?: ActionCard;
+  }
