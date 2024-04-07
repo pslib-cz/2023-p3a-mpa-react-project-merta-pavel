@@ -27,10 +27,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     goal: 0,
   };
 
-  const reducer = (state: GameState, action: ActionType): GameState => {
+  const reducer = (state: GameState, action: ActionType<string>): GameState => {
     switch (action.type) {
       case Action.PLAY_CARD: {
-        const { playerIndex, cardIndex } = action.payload;
+        const { playerIndex, cardIndex } = action.payload as { playerIndex: number; cardIndex: number };
         const currentPlayer = state.players[playerIndex];
         const updatedPlayer = {
           ...currentPlayer,
@@ -45,7 +45,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         return updatedGameState;
       }
       case Action.ZAMERIT: {
-        const targetIndex = action.payload.targetIndex;
+        const targetIndex = (action.payload as { targetIndex: number }).targetIndex;
         
         if (!state.target.includes(targetIndex)) {
           return {
@@ -59,9 +59,9 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       
       
       case Action.VYSTRELIT: {
-        const playerIndex = action.payload.playerIndex;
-        const targetIndex = action.payload.targetIndex;
-      
+        const playerIndex = (action.payload as { playerIndex: number }).playerIndex;
+        const targetIndex = (action.payload as { targetIndex: number }).targetIndex;
+
         const targetPlayer = state.players[targetIndex];
         const targetKachna = targetPlayer.kachna[0];
         if (state.target[targetIndex] !== playerIndex) {
@@ -79,14 +79,14 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         return { ...state };
       }
       case Action.DVOUTA_TREFA: {
-        const playerIndex = action.payload.playerIndex;
-        const targetIndex1 = action.payload.targetIndex1;
-        const targetIndex2 = action.payload.targetIndex2;
-      
+        const playerIndex = (action.payload as { playerIndex: number }).playerIndex;
+        const targetIndex1 = (action.payload as { targetIndex1: number }).targetIndex1;
+        const targetIndex2 = (action.payload as { targetIndex2: number }).targetIndex2;
+
         const targetPlayer1 = state.players[targetIndex1];
         const targetPlayer2 = state.players[targetIndex2];
-        const targetKachna1 = targetPlayer1.kachna[0]; 
-        const targetKachna2 = targetPlayer2.kachna[0]; 
+        const targetKachna1 = targetPlayer1.kachna[0];
+        const targetKachna2 = targetPlayer2.kachna[0];
       
         if (state.target[targetIndex1] !== playerIndex && state.target[targetIndex2] !== playerIndex) {
           state.players[playerIndex].kachna.push(targetKachna1);
@@ -108,10 +108,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       }
       
       case Action.DVOUTA_HROZBA: {
-        const playerIndex = action.payload.playerIndex;
-        const targetIndex1 = action.payload.targetIndex1;
-        const targetIndex2 = action.payload.targetIndex2;
-      
+        const playerIndex = (action.payload as { playerIndex: number }).playerIndex;
+        const targetIndex1 = (action.payload as { targetIndex1: number }).targetIndex1;
+        const targetIndex2 = (action.payload as { targetIndex2: number }).targetIndex2;
+            
         const targetPlayer1 = state.players[targetIndex1];
         const targetPlayer2 = state.players[targetIndex2];
         const targetKachna1 = targetPlayer1.kachna[0]; 
@@ -131,25 +131,24 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         return { ...state }; 
       }
       case Action.JEJDA_VEDELE: {
-        const playerIndex = action.payload.playerIndex;
-        const targetIndex = action.payload.targetIndex;
-        if (state.target[targetIndex] !== playerIndex) {
+        const playerIndex = (action.payload ?? {}).playerIndex;
+        const targetIndex = (action.payload ?? {}).targetIndex;
+        if (state.target[targetIndex as number] !== playerIndex) {
           return state;
         }
-      
-        const targetPlayer = state.players[targetIndex];
-        const targetKachna = targetPlayer.kachna[0]; 
-      
-        state.target[targetIndex] = -1;
 
-        state.players[targetIndex].kachna = [];
+        const targetPlayer = state.players[targetIndex as number ?? 0];
+        const targetKachna = targetPlayer.kachna[0]; 
+
+        state.target[targetIndex as number ?? 0] = -1;
+        state.players[targetIndex as number ?? 0].kachna = [];
       
         return { ...state }; 
       }
       
       case Action.STRELEJ_VPRAVO: {
-        const playerIndex = action.payload.playerIndex;
-        const targetIndex = action.payload.targetIndex;
+        const playerIndex = (action.payload ?? {}).playerIndex;
+        const targetIndex = (action.payload ?? {}).targetIndex as number; 
       
         if (state.target[targetIndex] === -1) {
           return state;
@@ -164,7 +163,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       }
       
       case Action.STRELEJ_VLEVO: {
-        const { playerIndex, targetIndex } = action.payload;
+        const { playerIndex, targetIndex } = action.payload as { playerIndex: number; targetIndex: number };
         const currentTargetIndex = state.target.indexOf(targetIndex);
         if (currentTargetIndex !== -1 && currentTargetIndex > 0) {
           state.target[currentTargetIndex] -= 1;
@@ -173,7 +172,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       }
       
       case Action.DVOJITA_HROZBA: {
-        const { playerIndex, targetIndex1, targetIndex2 } = action.payload;
+        const { playerIndex, targetIndex1, targetIndex2 } = action.payload as { playerIndex: number; targetIndex1: number; targetIndex2: number };
       
         state.target.push(targetIndex1);
         state.target.push(targetIndex2);
@@ -182,7 +181,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       }
       
       case Action.DIVOKEJ_BILL: {
-        const { playerIndex, kachnaIndex } = action.payload;
+        const { playerIndex, kachnaIndex } = action.payload as { playerIndex: number; kachnaIndex: number };
 
         state.players[playerIndex].kachna.splice(kachnaIndex, 1);
         
@@ -301,11 +300,11 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       }
       
       case Action.TURBOKACHNA: {
-        const playerIndex = action.payload.playerIndex;
+        const playerIndex = action.payload?.playerIndex;
 
-        const kachnaIndex = action.payload.kachnaIndex;
+        const kachnaIndex = action.payload?.kachnaIndex;
       
-        if (kachnaIndex < 0 || kachnaIndex >= state.players[playerIndex].kachna.length) {
+        if (kachnaIndex === undefined || playerIndex === undefined || kachnaIndex < 0 || kachnaIndex >= state.players[playerIndex].kachna.length) {
           return state;
         }
 
@@ -321,19 +320,18 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         return state;
       }
       
-      case Action.VYBER_CILE: {
-        const playerIndex = action.payload.playerIndex;
-        const cilIndex = action.payload.cilIndex;
-        state.goal = cilIndex; // Použití GameState.goal místo Player.goal
-        return state;
-    }
+        case Action.VYBER_CILE: {
+          const { playerIndex, cilIndex } = action.payload as { playerIndex: number; cilIndex: number };
+          state.goal = cilIndex;
+          return state;
+        }
       
       case Action.VYBER_KARTY: {
-        const { playerIndex, selectedCardIndex } = action.payload;
+        const { playerIndex, selectedCardIndex } = action.payload as unknown as { playerIndex: number; selectedCardIndex: number };
         const currentPlayer = state.players[playerIndex];
-      
+
         const selectedCard = currentPlayer.deck[selectedCardIndex];
-    
+
         return state;
       }
       default:

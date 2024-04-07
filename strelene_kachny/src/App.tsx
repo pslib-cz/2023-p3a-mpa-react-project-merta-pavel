@@ -1,5 +1,4 @@
-import {Player} from './types';
-import {AppRoute} from './AppRoute';
+import Component from './component/component';
 import './App.css';
 
 function App() {
@@ -7,7 +6,7 @@ function App() {
 
   return (
     <>
-      <AppRoute />
+      <Component />
     </>
   )
 }

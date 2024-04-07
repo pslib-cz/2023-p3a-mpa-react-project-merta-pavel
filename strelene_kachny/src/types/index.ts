@@ -51,9 +51,17 @@ export type ActionCard = Card & {
     action: Action, 
 }
 
-export interface ActionType<T = any> {
-    type: string;
-    payload?: T;
+export interface ActionType<T> {
+    type: T;
+    payload?: {
+      playerIndex: number;
+      cardIndex: number;
+      kachnaIndex: number;
+      targetIndex: number;
+        targetIndex1: number;
+        targetIndex2: number;
+    cilIndex: number;
+    };
   }
   
   export interface ActionPayload {

@@ -1,47 +1,58 @@
-import React, { createContext, useReducer, useContext } from 'react';
+import React, { useContext } from 'react';
+import { AppContext } from '../provider/provider';
+import { ActionType, Action } from '../types';
 
-// Define the initial state
-const initialState = {
-    count: 0,
-};
+const Component: React.FC = () => {
+  const { state, dispatch } = useContext(AppContext);
+  
+  const handlePlayCard = (playerIndex: number, cardIndex: number) => {
+    dispatch({ type: Action.PLAY_CARD, payload: { playerIndex, cardIndex, kachnaIndex: 0, targetIndex: 0, targetIndex1: 0, targetIndex2: 0, cilIndex: 0 } });
+  };
+  
+  const handleAim = (targetIndex: number) => {
+    dispatch({ type: Action.ZAMERIT, payload: { playerIndex: 0, cardIndex: 0, kachnaIndex: 0, targetIndex, targetIndex1: 0, targetIndex2: 0, cilIndex: 0 } });
+  };
+  
+  const handleShoot = (playerIndex: number, targetIndex: number) => {
+    dispatch({ type: Action.VYSTRELIT, payload: { playerIndex, cardIndex: 0, kachnaIndex: 0, targetIndex, targetIndex1: 0, targetIndex2: 0, cilIndex: 0 } });
+  };
+  
+  const handleShootRight = (playerIndex: number, targetIndex: number) => {
+    dispatch({ type: Action.STRELEJ_VPRAVO, payload: { playerIndex, cardIndex: 0, kachnaIndex: 0, targetIndex, targetIndex1: 0, targetIndex2: 0, cilIndex: 0 } });
+  };
 
-// Define the reducer function
-const reducer = (state: any, action: any) => {
-    switch (action.type) {
-        case 'INCREMENT':
-            return { ...state, count: state.count + 1 };
-        case 'DECREMENT':
-            return { ...state, count: state.count - 1 };
-        default:
-            return state;
-    }
-};
+  const handleShootLeft = (playerIndex: number, targetIndex: number) => {
+    dispatch({ type: Action.STRELEJ_VLEVO, payload: { playerIndex, cardIndex: 0, kachnaIndex: 0, targetIndex, targetIndex1: 0, targetIndex2: 0, cilIndex: 0 } });
+  };
 
-// Create the context
-const MyContext = createContext<any>(null);
-
-// Create the provider component
-const MyProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [state, dispatch] = useReducer(reducer, initialState);
-
-    return (
-        <MyContext.Provider value={{ state, dispatch }}>
-            {children}
-        </MyContext.Provider>
-    );
-};
-
-// Create a component that uses the context
-const MyComponent: React.FC = () => {
-    const { state, dispatch } = useContext(MyContext);
-
-    return (
+  const renderCards = () => {
+    return state.players.map((player, playerIndex) => (
+      <div key={playerIndex}>
+        <h2>Player {playerIndex}</h2>
         <div>
-            <h1>Count: {state.count}</h1>
-            <button onClick={() => dispatch({ type: 'INCREMENT' })}>Increment</button>
-            <button onClick={() => dispatch({ type: 'DECREMENT' })}>Decrement</button>
+          {player.kachna.map((kachna, kachnaIndex) => (
+            <div key={kachnaIndex}>
+              <p>Kachna {kachnaIndex}: {String(kachna)}</p>
+              {/* Zde můžete přidat další informace o kachně, např. její stav, zaměření, atd. */}
+            </div>
+          ))}
         </div>
-    );
+        <button onClick={() => handlePlayCard(playerIndex, 0)}>Play Card</button>
+        <button onClick={() => handleAim(0)}>Aim</button>
+        <button onClick={() => handleShoot(playerIndex, 0)}>Shoot</button>
+        <button onClick={() => handleShootRight(playerIndex, 0)}>Shoot Right</button>
+        <button onClick={() => handleShootLeft(playerIndex, 0)}>Shoot Left</button>
+      </div>
+    ));
+  };
+
+  return (
+    <div>
+      <h1>Střelené kachny</h1>
+      <p>Current Player: {state.currentPlayer}</p>
+      {renderCards()}
+    </div>
+  );
 };
 
-export { MyProvider, MyComponent };
+export default Component;
