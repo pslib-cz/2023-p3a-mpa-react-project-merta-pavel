@@ -74,6 +74,7 @@ export type ActionCardsDefense = {
 }
 
 export enum actionType{
+    DEFAULT,
     DRAW_CARD,
     ZAMERIT,
     VYSTRELIT,

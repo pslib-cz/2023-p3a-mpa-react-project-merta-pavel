@@ -1,5 +1,5 @@
 import React, { createContext, useReducer, ReactNode } from 'react';
-import { actionType, Card, GameState, Action } from '../types'; // Importujeme potřebné typy
+import { actionType, Card, GameState, Action, ActionCard } from '../types'; // Importujeme potřebné typy
 
 export const AppContext = createContext<{
   state: GameState;
@@ -28,14 +28,15 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     row: [],
   };
 
-  function shuffle(array: any[]) {
+  /*function shuffle(array: ActionCard[]) {
     const newArray = [...array];
     for (let i = newArray.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
     }
     return newArray;
-  }
+}*/
+
 
   // Implementace reduceru
   const reducer = (state: GameState, action: Action): GameState => {
@@ -304,16 +305,16 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         
           return { ...state, row: updatedRow };
         }
-        case actionType.KACHNI_TANEC: {
+        /*case actionType.KACHNI_TANEC: {
           // Vezměte všechny karty v řadě
-          const allCards = [...state.row];
-          
+          const allCards: ActionCard[] = [...state.row.map(card => ({ ...card, action: { type: actionType.DEFAULT } }))];
+
           // Zamíchejte karty do balíčku kachen
           const shuffledCards = shuffle(allCards);
-          
+
           // Vyberte nových šest karet z balíčku
           const newCards = shuffledCards.slice(0, 6);
-          
+
           // Vyložte nové karty do řady zleva doprava
           return { ...state, row: newCards };
         }
