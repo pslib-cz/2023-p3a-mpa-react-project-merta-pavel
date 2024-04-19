@@ -1,13 +1,12 @@
-import GameBoardProps from './component/GameBoardComponent';
 import './App.css';
-import GameBoardComponent from './component/GameBoardComponent';
+import Gameboard from './component/Gameboard';
 
 function App() {
   const cardData = {}; // Replace with the actual card data
 
   return (
     <>
-      <GameBoardComponent someCardData={cardData} />
+      <Gameboard/>
     </>
   )
 }
