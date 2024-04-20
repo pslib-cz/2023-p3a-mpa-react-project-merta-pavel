@@ -10,8 +10,8 @@ const Gameboard = () => {
     <div>
       <h1>Gameboard</h1>
       <button onClick={() => {
-          context?.dispatch({type: GameActionType.ADD_DUCKS, index: 0});
-          context?.dispatch({type: GameActionType.SHUFFLE, index: 0});
+          context?.dispatch({type: GameActionType.ADD_DUCKS});
+          context?.dispatch({type: GameActionType.SHUFFLE});
       }}>Add ducks</button>
       {context?.state.fields.map((field, index) => {
         return (
@@ -33,7 +33,7 @@ const Field : React.FC<{data: FieldData, id: number}> = ({data, id}) => {
         context?.dispatch({type: GameActionType.AIM, index: id})
       }}>Aim</button>
       <button onClick={(_e) => {
-        context?.dispatch({type: GameActionType.SHOOT, index: id})
+        context?.dispatch({type: GameActionType.SHOOT, index: id, duck_id: id})
       }}>Shoot</button>
       {data.aim ? "🎯" : ""}
     </div>
