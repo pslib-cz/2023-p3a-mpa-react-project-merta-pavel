@@ -1,1 +1,1 @@
-export { default as Gameboard } from "./GameBoard";
+export { default as Gameboard } from "./Gameboard";

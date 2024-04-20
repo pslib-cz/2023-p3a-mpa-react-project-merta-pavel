@@ -9,6 +9,7 @@ export declare type Field = {
 };
 
 export declare type Duck = {
+    id: number;
     color: Color;
 };
 
