@@ -33,7 +33,8 @@ const Field : React.FC<{data: FieldData, id: number}> = ({data, id}) => {
         context?.dispatch({type: GameActionType.AIM, index: id})
       }}>Aim</button>
       <button onClick={(_e) => {
-        context?.dispatch({type: GameActionType.SHOOT, index: id, duck_id: id})
+        console.log(context?.state.deck[id])
+        context?.dispatch({type: GameActionType.SHOOT, index: id, duck_id: context?.state.deck[id]?.id})
       }}>Shoot</button>
       {data.aim ? "🎯" : ""}
     </div>

@@ -11,7 +11,7 @@ interface GameContextState {
 type GameAction = { type: GameActionType.AIM; index: number; } |
 { type: GameActionType.ADD_DUCKS; } |
 { type: GameActionType.SHUFFLE;} |
-{ type: GameActionType.SHOOT; index: number; duck_id: number; }
+{ type: GameActionType.SHOOT; index: number; duck_id?: number; }
 
 export enum GameActionType {
   AIM = 'AIM',
@@ -31,9 +31,12 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
         ),
       };
     case GameActionType.SHOOT:
+      console.log(action);
+      console.log(state.deck[action.index])
       if (state.fields[action.index].aim === false) return state;
 
-      if (state.deck[action.index]?.id === action.duck_id) {
+      if (action.duck_id && state.deck[action.index]?.id === action.duck_id) {
+        console.log('hit');
         state.deck.splice(action.index, 1);
       }
 
@@ -45,9 +48,10 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
       };
       case GameActionType.ADD_DUCKS:
         let newDeck = [undefined, undefined, undefined, undefined, undefined] as (Duck|undefined)[];
-        state.players.map((p, i) =>{
+        let duckId = 1;
+        state.players.map((p, _i) =>{
           for (let j = 0; j < 5; j++) {
-            newDeck.push({ color: p.color, id: i*j });          
+            newDeck.push({ color: p.color, id: duckId++ });          
           }
         });
         return {
