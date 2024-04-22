@@ -1,19 +1,41 @@
 import React, { useContext } from "react"
-import { GameActionType, GameContext } from "../provider/provider";
-import { Field as FieldData } from "../types";
+import { GameContext } from "../provider/provider";
+import { ActionCard, Field as FieldData } from "../types";
 
 const Gameboard = () => {
-  const context = useContext(GameContext);
-
+  const {state, startGame, handleActionCard} = useContext(GameContext);
 
   return (
     <div>
       <h1>Gameboard</h1>
-      <button onClick={() => {
-          context?.dispatch({type: GameActionType.ADD_DUCKS});
-          context?.dispatch({type: GameActionType.SHUFFLE});
-      }}>Add ducks</button>
-      {context?.state.fields.map((field, index) => {
+      <button onClick={(_e) => {
+        startGame(4);
+      }}>Start game</button>
+      <button onClick={(_e) => {
+        handleActionCard(ActionCard.AIM, 0);
+      }}>Aim</button>
+      <button onClick={(_e) => {
+        handleActionCard(ActionCard.SHOOT, 0, [state.deck[0]?.id ?? 0]);
+      }}>Shoot</button>
+      <button onClick={(_e) => {
+        handleActionCard(ActionCard.DOUBLE_THREAT, 0);
+      }}>Double threat</button>
+      <button onClick={(_e) => {
+        handleActionCard(ActionCard.DOUBLE_SHOT, 0, [state.deck[0]?.id ?? 0, state.deck[1]?.id ?? 0]);
+      }}>Double shot</button>
+      <button onClick={(_e) => {
+        handleActionCard(ActionCard.DIVOKEJ_BILL, 0, [state.deck[0]?.id ?? 0]);
+      }}>Divokej Bill</button>
+      <button onClick={(_e) => {
+        handleActionCard(ActionCard.AIM_RIGHT, 0);
+      }}>Aim right</button>
+      <button onClick={(_e) => {
+        handleActionCard(ActionCard.AIM_LEFT, 1);
+      }}>Aim left</button>
+      <button onClick={(_e) => {
+        handleActionCard(ActionCard.MISS, 0, [state.deck[1]?.id ?? 0]);
+      }}>Aim left</button>
+      {state.fields.map((field, index) => {
         return (
           <Field key={index} id={index} data={field} />
         )
@@ -23,19 +45,12 @@ const Gameboard = () => {
 }
 
 const Field : React.FC<{data: FieldData, id: number}> = ({data, id}) => {
-  const context = useContext(GameContext);
+  const {state} = useContext(GameContext);
 
   return (
     <div>
       <p>Field</p>
-      <p>Duck: {context?.state.deck[id]?.color}</p>
-      <button onClick={(_e) => {
-        context?.dispatch({type: GameActionType.AIM, index: id})
-      }}>Aim</button>
-      <button onClick={(_e) => {
-        console.log(context?.state.deck[id])
-        context?.dispatch({type: GameActionType.SHOOT, index: id, duck_id: context?.state.deck[id]?.id})
-      }}>Shoot</button>
+      <p>Duck: {state.deck[id]?.color}</p>
       {data.aim ? "🎯" : ""}
     </div>
   )

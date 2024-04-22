@@ -15,12 +15,23 @@ export declare type Duck = {
 
 
 export enum Color {
-    BLUE = "blue",
-    YELLOW = "yellow",
-    ORANGE = "orange",
-    GREEN = "green",
-    PURPLE = "purple",
-    PINK = "pink",
+    BLUE = 0,
+    YELLOW = 1,
+    ORANGE = 2,
+    GREEN = 3,
+    PURPLE = 4,
+    PINK = 5,
+};
+
+export enum ActionCard {
+    AIM = 0,
+    SHOOT = 1,
+    DOUBLE_THREAT = 2,
+    DOUBLE_SHOT = 3,
+    MISS = 4,
+    AIM_LEFT = 5,
+    AIM_RIGHT = 6,
+    DIVOKEJ_BILL = 7,
 };
 
 export declare type Player = {

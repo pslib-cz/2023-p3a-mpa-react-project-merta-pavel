@@ -1,23 +1,31 @@
-import React, { createContext, useReducer } from 'react';
-import { Color, Duck, GameState } from '../types';
+import React, { createContext, useCallback, useReducer } from 'react';
+import { ActionCard, Color, Duck, GameState } from '../types';
 
 // Define the initial state for your context
 interface GameContextState {
   state: GameState;
-  dispatch: React.Dispatch<GameAction>;
+  startGame: (playerCount: number) => Promise<void>;
+  handleActionCard: (card: ActionCard,index: number, duck_ids?: number[]) => void;
+}
+
+function getNthEnumValue<T extends object>(enumObject: T, index: number): T[keyof T] | undefined {
+  const keys = Object.keys(enumObject).filter(key => typeof enumObject[key as keyof T] === 'number');
+  return enumObject[keys[index] as keyof T];
 }
 
 // Define the action types
 type GameAction = { type: GameActionType.AIM; index: number; } |
-{ type: GameActionType.ADD_DUCKS; } |
+{ type: GameActionType.ADD_DUCKS; players: number } |
 { type: GameActionType.SHUFFLE;} |
-{ type: GameActionType.SHOOT; index: number; duck_id?: number; }
+{ type: GameActionType.SHOOT; index: number; duck_id?: number; } |
+{ type: GameActionType.REMOVE_AIM; index: number; };
 
 export enum GameActionType {
   AIM = 'AIM',
   SHOOT = 'SHOOT',
   ADD_DUCKS = 'ADD_DUCKS',
   SHUFFLE = 'SHUFFLE',
+  REMOVE_AIM = 'REMOVE_AIM',
 }
 
 // Define the reducer function
@@ -48,6 +56,14 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
       };
       case GameActionType.ADD_DUCKS:
         let newDeck = [undefined, undefined, undefined, undefined, undefined] as (Duck|undefined)[];
+        
+        for (let i = 0; i < action.players; i++) {
+          const c = getNthEnumValue(Color, i);
+          if (c === undefined) break;
+          state.players.push({ color: c, deadDucks: 0 });
+        }
+
+
         let duckId = 1;
         state.players.map((p, _i) =>{
           for (let j = 0; j < 5; j++) {
@@ -68,13 +84,20 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
         ...state,
         deck: shuffledDeck,
       };
+    case GameActionType.REMOVE_AIM:
+      return {
+        ...state,
+        fields: state.fields.map((field, index) =>
+          index === action.index ? { ...field, aim: false } : field
+        ),
+      };
     default:
       return state;
   }
 };
 
 // Create a new context
-const GameContext = createContext<GameContextState | undefined>(undefined);
+const GameContext = createContext<GameContextState | undefined>(undefined) as React.Context<GameContextState>;
 
 const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(gameReducer, {
@@ -93,16 +116,58 @@ const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
       undefined,
       undefined,
     ],
-    players: [
-      { color: Color.BLUE, deadDucks: 0 },
-      { color: Color.YELLOW, deadDucks: 0 },
-      { color: Color.ORANGE, deadDucks: 0 },
-    ],
+    players: [],
   });
+
+  const startGame = useCallback(async (playerCount: number) => {
+    dispatch({ type: GameActionType.ADD_DUCKS, players: playerCount });
+    dispatch({ type: GameActionType.SHUFFLE });
+  },[state]);
+
+  const handleActionCard = useCallback((card: ActionCard, index: number, duck_ids?: number[]) => {
+    switch (card) {
+      case ActionCard.AIM:
+        dispatch({ type: GameActionType.AIM, index });
+        break;
+      case ActionCard.SHOOT:
+        dispatch({ type: GameActionType.SHOOT, index, duck_id: duck_ids ? duck_ids[0] : undefined });
+        break;
+      case ActionCard.DIVOKEJ_BILL:
+        dispatch({ type: GameActionType.AIM, index });
+        dispatch({ type: GameActionType.SHOOT, index, duck_id: duck_ids ? duck_ids[0] : undefined});
+        break;
+      case ActionCard.DOUBLE_THREAT:
+        dispatch({ type: GameActionType.AIM, index });
+        dispatch({ type: GameActionType.AIM, index: index + 1 });
+        break;
+      case ActionCard.DOUBLE_SHOT:
+        dispatch({ type: GameActionType.SHOOT, index: index + 1, duck_id: duck_ids ? duck_ids[1] : undefined });
+        dispatch({ type: GameActionType.SHOOT, index, duck_id: duck_ids ? duck_ids[0] : undefined });
+        break;
+      case ActionCard.AIM_LEFT:
+        dispatch({ type: GameActionType.AIM, index: index - 1 });
+        dispatch({ type: GameActionType.REMOVE_AIM, index });
+        break;
+      case ActionCard.AIM_RIGHT:
+        dispatch({ type: GameActionType.AIM, index: index + 1 });
+        dispatch({ type: GameActionType.REMOVE_AIM, index });
+        break;
+      case ActionCard.MISS:
+        if (state.fields[index].aim === false) break;
+        dispatch({ type: GameActionType.REMOVE_AIM, index });
+        dispatch({ type: GameActionType.AIM, index: index+1 });
+        dispatch({ type: GameActionType.SHOOT, index: index+1, duck_id: duck_ids ? duck_ids[0] : undefined});
+        dispatch({ type: GameActionType.AIM, index: index+1 });
+        dispatch({ type: GameActionType.SHOOT, index: index+1, duck_id: duck_ids ? duck_ids[0] : undefined});
+        break;
+    }
+    
+  },[state.deck, state.fields]);
 
   const contextValue: GameContextState = {
     state: state,
-    dispatch: dispatch,
+    startGame: startGame,
+    handleActionCard: handleActionCard,
   };
 
   return <GameContext.Provider value={contextValue}>{children}</GameContext.Provider>;
