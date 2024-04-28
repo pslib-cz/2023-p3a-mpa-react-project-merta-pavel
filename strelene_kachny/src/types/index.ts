@@ -32,6 +32,8 @@ export enum ActionCard {
     AIM_LEFT = 5,
     AIM_RIGHT = 6,
     DIVOKEJ_BILL = 7,
+    ADD_DUCKS = 400,
+    SHUFFLE = 500,
 };
 
 export declare type Player = {

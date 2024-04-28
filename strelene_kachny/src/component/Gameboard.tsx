@@ -3,7 +3,7 @@ import { GameContext } from "../provider/provider";
 import { ActionCard, Field as FieldData } from "../types";
 
 const Gameboard = () => {
-  const {state, startGame, handleActionCard} = useContext(GameContext);
+  const {state, startGame, dispatch} = useContext(GameContext);
 
   return (
     <div>
@@ -12,29 +12,29 @@ const Gameboard = () => {
         startGame(4);
       }}>Start game</button>
       <button onClick={(_e) => {
-        handleActionCard(ActionCard.AIM, 0);
+        dispatch({type: ActionCard.AIM, index: 0});
       }}>Aim</button>
       <button onClick={(_e) => {
-        handleActionCard(ActionCard.SHOOT, 0, [state.deck[0]?.id ?? 0]);
+        dispatch({type: ActionCard.SHOOT, index: 0, duck_id: state.deck[0]?.id});
       }}>Shoot</button>
       <button onClick={(_e) => {
-        handleActionCard(ActionCard.DOUBLE_THREAT, 0);
+        dispatch({type: ActionCard.DOUBLE_THREAT, index: 0});
       }}>Double threat</button>
       <button onClick={(_e) => {
-        handleActionCard(ActionCard.DOUBLE_SHOT, 0, [state.deck[0]?.id ?? 0, state.deck[1]?.id ?? 0]);
+        dispatch({type: ActionCard.DOUBLE_SHOT, index: 0, duck_id: state.deck[0]?.id ?? 0, duck_id2: state.deck[1]?.id ?? 0});
       }}>Double shot</button>
       <button onClick={(_e) => {
-        handleActionCard(ActionCard.DIVOKEJ_BILL, 0, [state.deck[0]?.id ?? 0]);
+        dispatch({type: ActionCard.DIVOKEJ_BILL, index: 0, duck_id: state.deck[0]?.id ?? 0});
       }}>Divokej Bill</button>
       <button onClick={(_e) => {
-        handleActionCard(ActionCard.AIM_RIGHT, 0);
+        dispatch({type: ActionCard.AIM_RIGHT, index: 0});
       }}>Aim right</button>
       <button onClick={(_e) => {
-        handleActionCard(ActionCard.AIM_LEFT, 1);
+        dispatch({type: ActionCard.AIM_LEFT, index: 1});
       }}>Aim left</button>
       <button onClick={(_e) => {
-        handleActionCard(ActionCard.MISS, 0, [state.deck[1]?.id ?? 0]);
-      }}>Aim left</button>
+        dispatch({type: ActionCard.MISS, index: 0, duck_id: state.deck[1]?.id ?? 0});
+      }}>Miss</button>
       {state.fields.map((field, index) => {
         return (
           <Field key={index} id={index} data={field} />
