@@ -32,6 +32,12 @@ export enum ActionCard {
     AIM_LEFT = 5,
     AIM_RIGHT = 6,
     DIVOKEJ_BILL = 7,
+    MARCH = 8,
+    LEHARO = 9,
+    CHVATAM = 10,
+    TURBODUCK = 11,
+    //Kachni tanec je shuffle
+    //Na rosambo vyuzit predesle karty pohybu
     ADD_DUCKS = 400,
     SHUFFLE = 500,
 };

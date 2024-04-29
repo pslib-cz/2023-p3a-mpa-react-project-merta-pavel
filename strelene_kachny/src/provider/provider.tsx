@@ -1,5 +1,5 @@
 import React, { createContext, useReducer } from 'react';
-import { ActionCard, Color, GameState, Player } from '../types';
+import { ActionCard, Color, Duck, GameState, Player } from '../types';
 
 function getNthEnumValue<T extends object>(enumObject: T, index: number): T[keyof T] | undefined {
   const keys = Object.keys(enumObject).filter(key => typeof enumObject[key as keyof T] === 'number');
@@ -24,7 +24,11 @@ type GameAction =
   | { type: ActionCard.MISS; index: number; duck_id?: number}
   | { type: ActionCard.DIVOKEJ_BILL; index: number; duck_id?: number }
   | { type: ActionCard.ADD_DUCKS; players: number }
-  | { type: ActionCard.SHUFFLE };
+  | { type: ActionCard.SHUFFLE }
+  | { type: ActionCard.MARCH; }
+  | { type: ActionCard.LEHARO; index: number }
+  | { type: ActionCard.CHVATAM; index: number }
+  | { type: ActionCard.TURBODUCK; index: number };
 
 // Define the reducer function
 const gameReducer = (state: GameState, action: GameAction): GameState => {
@@ -124,6 +128,49 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
 
       // If the aim is not true at the current index, return the state without any changes
       return state;
+      case ActionCard.MARCH:
+        const newDeckForMarch = [...state.deck];
+        const firstElement = newDeckForMarch.shift();
+        if (firstElement) {
+          newDeckForMarch.push(firstElement);
+        }
+        return {
+          ...state,
+          deck: newDeckForMarch,
+        };
+    case ActionCard.LEHARO:
+      const newDeckForLeharo = [...state.deck];
+      if (action.index < newDeckForLeharo.length - 1) {
+        const temp = newDeckForLeharo[action.index];
+        newDeckForLeharo[action.index] = newDeckForLeharo[action.index + 1];
+        newDeckForLeharo[action.index + 1] = temp;
+      }
+      return {
+        ...state,
+        deck: newDeckForLeharo,
+      };
+      case ActionCard.CHVATAM:
+        const newDeckForChvatam = [...state.deck];
+        if (action.index <= newDeckForChvatam.length) {
+          const temp = newDeckForChvatam[action.index];
+          newDeckForChvatam[action.index] = newDeckForChvatam[action.index - 1];
+          newDeckForChvatam[action.index - 1] = temp;
+        }
+        return {
+          ...state,
+          deck: newDeckForChvatam,
+        };
+    case ActionCard.TURBODUCK:
+          const newDeckForTurbo = [...state.deck];
+          if (action.index < newDeckForTurbo.length) {
+            const element = newDeckForTurbo[action.index];
+            newDeckForTurbo.splice(action.index, 1); // remove element from its current position
+            newDeckForTurbo.unshift(element); // add element to the beginning
+          }
+          return {
+            ...state,
+            deck: newDeckForTurbo,
+          };
     case ActionCard.DIVOKEJ_BILL:
         // Aim
         const aimedState = {
@@ -167,7 +214,7 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
     deck: newDucks,
   };
   
-      case ActionCard.SHUFFLE:
+    case ActionCard.SHUFFLE:
         // Shuffle the deck
         const shuffledDeck = [...state.deck];
         for (let i = shuffledDeck.length - 1; i > 0; i--) {
@@ -179,6 +226,7 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
           ...state,
           deck: shuffledDeck,
         };
+
     default:
       return state;
   }

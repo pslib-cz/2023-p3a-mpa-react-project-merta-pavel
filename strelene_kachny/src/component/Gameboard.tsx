@@ -35,6 +35,15 @@ const Gameboard = () => {
       <button onClick={(_e) => {
         dispatch({type: ActionCard.MISS, index: 0, duck_id: state.deck[1]?.id ?? 0});
       }}>Miss</button>
+      <button onClick={(_e) => {
+        dispatch({type: ActionCard.LEHARO, index: 0});
+      }}>Leháro</button>
+      <button onClick={(_e) => {
+        dispatch({type: ActionCard.CHVATAM, index: 1});
+      }}>Chvátám</button>
+      <button onClick={(_e) => {
+        dispatch({type: ActionCard.TURBODUCK, index: 5});
+      }}>Turbo</button>
       {state.fields.map((field, index) => {
         return (
           <Field key={index} id={index} data={field} />
