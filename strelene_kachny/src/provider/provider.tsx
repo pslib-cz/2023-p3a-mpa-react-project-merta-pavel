@@ -1,5 +1,5 @@
 import React, { createContext, useReducer } from 'react';
-import { ActionCard, Color, Duck, GameState, Player } from '../types';
+import { ActionCard, Color, GameState, Player } from '../types';
 
 function getNthEnumValue<T extends object>(enumObject: T, index: number): T[keyof T] | undefined {
   const keys = Object.keys(enumObject).filter(key => typeof enumObject[key as keyof T] === 'number');
