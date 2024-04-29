@@ -8,6 +8,9 @@ Téma bude karetní hra Střelené kachny.
 
 Návrh [zde](https://www.figma.com/file/nrdl8EQvB3672H8kDtot4A/MPA-Projekt?type=design&node-id=0%3A1&mode=design&t=5OtNJgM5UIEtVe6R-1)
 
+## Github Pages
+Pages [zde]()
+
 ## Odkazy pro vývoj
 
 Zde budou živé linky na:
