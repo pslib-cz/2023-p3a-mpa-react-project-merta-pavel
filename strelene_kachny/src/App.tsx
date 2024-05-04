@@ -1,12 +1,19 @@
+import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
+import MainMenu from './page/MainMenu';
 import './App.css';
 import Gameboard from './component/Gameboard';
 
 function App() {
-  const cardData = {}; // Replace with the actual card data
 
+  const router = createBrowserRouter(
+    createRoutesFromElements([
+      <Route path="/" element={<MainMenu />} />,
+      <Route path="/component" element={<Gameboard />} />,
+    ]),
+  )
   return (
     <>
-      <Gameboard/>
+      <RouterProvider router={router} />
     </>
   )
 }
