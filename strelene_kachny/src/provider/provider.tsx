@@ -28,7 +28,8 @@ type GameAction =
   | { type: ActionCard.MARCH; }
   | { type: ActionCard.LEHARO; index: number }
   | { type: ActionCard.CHVATAM; index: number }
-  | { type: ActionCard.TURBODUCK; index: number };
+  | { type: ActionCard.TURBODUCK; index: number }
+  | { type: ActionCard.AIM_POSITION_SELECT; position: number };
 
 // Define the reducer function
 const gameReducer = (state: GameState, action: GameAction): GameState => {
@@ -226,7 +227,13 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
           ...state,
           deck: shuffledDeck,
         };
-
+        case ActionCard.AIM_POSITION_SELECT:
+          return {
+            ...state,
+            fields: state.fields.map((field, index) =>
+              index === action.position ? { ...field, aim: true } : field
+            ),
+          };
     default:
       return state;
   }

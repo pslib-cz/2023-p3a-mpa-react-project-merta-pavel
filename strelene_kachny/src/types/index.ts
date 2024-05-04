@@ -13,7 +13,6 @@ export declare type Duck = {
     color: Color;
 };
 
-
 export enum Color {
     BLUE = 0,
     YELLOW = 1,
@@ -40,6 +39,7 @@ export enum ActionCard {
     //Na rosambo vyuzit predesle karty pohybu
     ADD_DUCKS = 400,
     SHUFFLE = 500,
+    AIM_POSITION_SELECT = 12,
 };
 
 export declare type Player = {
