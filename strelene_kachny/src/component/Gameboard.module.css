@@ -1,0 +1,4 @@
+.table__cards{
+    display: flex;
+    flex-direction: row;
+}
