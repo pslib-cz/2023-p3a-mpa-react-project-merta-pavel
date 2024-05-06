@@ -1,4 +1,4 @@
-import React, { createContext, useReducer } from 'react';
+import React, { createContext, useContext, useReducer, useState } from 'react';
 import { ActionCard, Color, Duck, GameState, Player } from '../types';
 
 function getNthEnumValue<T extends object>(enumObject: T, index: number): T[keyof T] | undefined {
@@ -33,6 +33,16 @@ type GameAction =
 
 // Define the reducer function
 const gameReducer = (state: GameState, action: GameAction): GameState => {
+  if (state.deck.length === 6) {
+    for (let card of state.deck) {
+      if (card !== undefined) {
+        return {
+          ...state,
+          winner: card.color,
+        }
+      }
+    }
+  }
   switch (action.type) {
     case ActionCard.AIM:
       return {
@@ -207,8 +217,10 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
 
   const newDucks = newPlayers.flatMap(player =>
     Array.from({ length: 5 }, (_, i) => ({ color: player.color, id: i + 1 }))
-  );
-
+  ) as (Duck | undefined)[];  // Assert the result is an array of Ducks
+  for (let i = 0; i < 5; i++){
+    newDucks.push(undefined);
+  }
   return {
     ...state,
     players: newPlayers,
@@ -243,6 +255,7 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
 const GameContext = createContext<GameContextState | undefined>(undefined) as React.Context<GameContextState>;
 
 const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [winner , setWinner] = useState<Color |undefined>(undefined  ); // Declare winner variable
   const [state, dispatch] = useReducer(gameReducer, {
     fields: [
       { aim: false },
@@ -260,6 +273,7 @@ const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
       undefined,
     ],
     players: [],
+    winner: undefined,
   });
 
   const startGame = async (playerCount: number) => {

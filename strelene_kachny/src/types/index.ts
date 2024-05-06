@@ -2,6 +2,7 @@ export declare type GameState = {
     fields: Field[];
     deck: (Duck|undefined)[];
     players: Player[];
+    winner: Color | undefined;
 };
 
 export declare type Field = {

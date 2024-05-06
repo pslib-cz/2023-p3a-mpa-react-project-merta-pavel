@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { GameContext } from "../provider/provider";
-import { ActionCard, Field as FieldData } from "../types";
-import { duckImages } from "../data/data.tsx";
+import { ActionCard, Field as FieldData, Color } from "../types";
+import { duckImages, getduckImages } from "../data/data.tsx";
 import styles from "./Gameboard.module.css";
 
 
@@ -83,7 +83,7 @@ const Gameboard = () => {
         dispatch({ type: ActionCard.DOUBLE_SHOT, index: 0, duck_id: state.deck[0]?.id ?? 0, duck_id2: state.deck[1]?.id ?? 0 });
       }}>Double shot</button>
       <button onClick={(_e) => {
-        dispatch({ type: ActionCard.DIVOKEJ_BILL, index: 0, duck_id: state.deck[0]?.id ?? 0 });
+        dispatch({ type: ActionCard.DIVOKEJ_BILL, index: selectedPosition ?? 0, duck_id: state.deck[selectedPosition ?? 0]?.id ?? 0 });
       }}>Divokej Bill</button>
       <button onClick={(_e) => {
         dispatch({ type: ActionCard.AIM_RIGHT, index: 0 });
@@ -111,18 +111,28 @@ const Gameboard = () => {
   )
 }
 
-const Field: React.FC<{ data: FieldData, index: number, dispatch: React.Dispatch<any>, setSelectedPosition: React.Dispatch<React.SetStateAction<number | null>>, selectedPosition: number | null, showAimOptions: boolean }> = ({ data, index, dispatch, setSelectedPosition, selectedPosition, showAimOptions }) => {  const { state } = useContext(GameContext);
-  const duckColor = state.deck[index]?.color;
-  const duckImage = duckColor ? duckImages[duckColor] : undefined;
+const Field: React.FC<{ data: FieldData, index: number, dispatch: React.Dispatch<any>, setSelectedPosition: React.Dispatch<React.SetStateAction<number | null>>, selectedPosition: number | null, showAimOptions: boolean }> = ({ data, index, dispatch, setSelectedPosition, selectedPosition, showAimOptions }) => {
+  const { state: gameState } = useContext(GameContext);
+  const duckColor = gameState.deck[index]?.color ?? undefined;
 
   return (
     <div className={styles.table}>
-      <div className={styles.table__cards}>
+      {gameState.winner === undefined ?
+        <div className={styles.table__cards}>
         <p>Field</p>
         <p>Duck: {duckColor}</p>
-        {duckImage && <img src={duckImage.image} alt={`Duck of color ${duckColor}`} />}
+        <img src={getduckImages(duckColor)} alt={`Duck of color ${duckColor}`} />
+        <button onClick={() => {
+          setSelectedPosition(index);
+        }}>Select</button>
+        {selectedPosition === index && <div>Selected</div>}
         {data.aim ? "🎯" : ""}
       </div>
+      :
+      <div>
+        <p>Winner: {gameState.winner}</p>
+      </div>
+      }
     </div>
   )
 }
