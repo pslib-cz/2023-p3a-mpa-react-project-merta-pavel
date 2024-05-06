@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, useState } from 'react';
+import React, { createContext, useReducer } from 'react';
 import { ActionCard, Color, Duck, GameState, Player } from '../types';
 
 function getNthEnumValue<T extends object>(enumObject: T, index: number): T[keyof T] | undefined {
@@ -255,7 +255,6 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
 const GameContext = createContext<GameContextState | undefined>(undefined) as React.Context<GameContextState>;
 
 const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [winner , setWinner] = useState<Color |undefined>(undefined  ); // Declare winner variable
   const [state, dispatch] = useReducer(gameReducer, {
     fields: [
       { aim: false },

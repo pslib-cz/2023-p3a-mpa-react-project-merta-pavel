@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { GameContext } from "../provider/provider";
-import { ActionCard, Field as FieldData, Color } from "../types";
-import { duckImages, getduckImages } from "../data/data.tsx";
+import { ActionCard, Field as FieldData } from "../types";
+import {  getduckImages } from "../data/data.tsx";
 import styles from "./Gameboard.module.css";
 
 
@@ -17,7 +17,7 @@ const Gameboard = () => {
     return acc;
   }, [] as number[]);
 
-  const handleShoot = (index: number) => {
+  const handleShoot = (_index: number) => {
     if (selectedPosition === null) {
       alert("Please select a position before shooting.");
       return;
@@ -30,7 +30,7 @@ const Gameboard = () => {
       alert("The positions must be adjacent.");
       return;
     }
-    dispatch({ type: ActionCard.DOUBLE_THREAT, index: 0 });
+    dispatch({ type: ActionCard.DOUBLE_THREAT, index: index1});
   };
   return (
     <div>
@@ -92,16 +92,16 @@ const Gameboard = () => {
         dispatch({ type: ActionCard.AIM_LEFT, index: 1 });
       }}>Aim left</button>
       <button onClick={(_e) => {
-        dispatch({ type: ActionCard.MISS, index: 0, duck_id: state.deck[1]?.id ?? 0 });
+        dispatch({ type: ActionCard.MISS, index: selectedPosition ?? 0, duck_id: state.deck[(selectedPosition ?? 0) +1]?.id ?? 0 });
       }}>Miss</button>
       <button onClick={(_e) => {
-        dispatch({ type: ActionCard.LEHARO, index: 0 });
+        dispatch({ type: ActionCard.LEHARO, index: selectedPosition ?? 0});
       }}>Leháro</button>
       <button onClick={(_e) => {
-        dispatch({ type: ActionCard.CHVATAM, index: 1 });
+        dispatch({ type: ActionCard.CHVATAM, index: selectedPosition ?? 0});
       }}>Chvátám</button>
       <button onClick={(_e) => {
-        dispatch({ type: ActionCard.TURBODUCK, index: 5 });
+        dispatch({ type: ActionCard.TURBODUCK, index: selectedPosition ?? 0 });
       }}>Turbo</button>
       {state.fields.map((field, index) => {
         return (
@@ -111,7 +111,7 @@ const Gameboard = () => {
   )
 }
 
-const Field: React.FC<{ data: FieldData, index: number, dispatch: React.Dispatch<any>, setSelectedPosition: React.Dispatch<React.SetStateAction<number | null>>, selectedPosition: number | null, showAimOptions: boolean }> = ({ data, index, dispatch, setSelectedPosition, selectedPosition, showAimOptions }) => {
+const Field: React.FC<{ data: FieldData, index: number, dispatch: React.Dispatch<any>, setSelectedPosition: React.Dispatch<React.SetStateAction<number | null>>, selectedPosition: number | null, showAimOptions: boolean }> = ({ data, index, setSelectedPosition, selectedPosition }) => {
   const { state: gameState } = useContext(GameContext);
   const duckColor = gameState.deck[index]?.color ?? undefined;
 

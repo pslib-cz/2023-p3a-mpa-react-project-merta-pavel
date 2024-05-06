@@ -1,4 +1,4 @@
-import { Color, Duck } from "../types";
+import { Color } from "../types";
 import blue from "../img/ducks/BLUE.jpg";
 import green from "../img/ducks/GREEN.jpg";
 import yellow from "../img/ducks/YELLOW.jpg";
