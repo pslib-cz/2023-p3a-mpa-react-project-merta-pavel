@@ -8,7 +8,7 @@ import styles from "./Gameboard.module.css";
 const Gameboard = () => {
   const { state, startGame, dispatch } = useContext(GameContext);
   const [selectedPosition, setSelectedPosition] = useState<number | null>(null); // Stav pro uchování vybrané pozice pro střelbu
-  const [showAimOptions, setShowAimOptions] = useState(false); // Declare showAimOptions variable
+  const [showAimOptions, _setShowAimOptions] = useState(false); // Declare showAimOptions variable
   const [showShootOptions, setShowShootOptions] = useState(false); // Declare showShootOptions variable
   const aimPositions = state.fields.reduce((acc: number[], field, index) => {
     if (field.aim) {
@@ -39,7 +39,9 @@ const Gameboard = () => {
         startGame(4);
       }}>Start game</button>
       <button onClick={() => setShowShootOptions(!showShootOptions)}>SHOOT</button>
-      <button onClick={() => setShowAimOptions(!showAimOptions)}>AIM</button>
+      <button onClick={(_e) => {
+        dispatch({ type: ActionCard.AIM, index: selectedPosition ?? 0});
+      }}>AIM</button>
       {showShootOptions && (
         <>
               {aimPositions.map((aimIndex) => (
@@ -48,34 +50,6 @@ const Gameboard = () => {
         </>
       )
         }
-      {showAimOptions && (
-  <>
-    <button onClick={() => {
-      setSelectedPosition(0);
-      dispatch({ type: ActionCard.AIM_POSITION_SELECT, position: 0 });
-    }}>Aim at position 1</button>
-    <button onClick={() => {
-      setSelectedPosition(1);
-      dispatch({ type: ActionCard.AIM_POSITION_SELECT, position: 1 });
-    }}>Aim at position 2</button>
-    <button onClick={() => {
-      setSelectedPosition(2);
-      dispatch({ type: ActionCard.AIM_POSITION_SELECT, position: 2 });
-    }}>Aim at position 3</button>
-    <button onClick={() => {
-      setSelectedPosition(3);
-      dispatch({ type: ActionCard.AIM_POSITION_SELECT, position: 3 });
-    }}>Aim at position 4</button>
-    <button onClick={() => {
-      setSelectedPosition(4);
-      dispatch({ type: ActionCard.AIM_POSITION_SELECT, position: 4 });
-    }}>Aim at position 5</button>
-    <button onClick={() => {
-      setSelectedPosition(5);
-      dispatch({ type: ActionCard.AIM_POSITION_SELECT, position: 5 });
-    }}>Aim at position 6</button>
-  </>
-)}
 <button onClick={(_e) => {
   handleDoubleShoot(0, 1); // Replace 0 and 1 with the actual positions
 }}>Double threat</button>
