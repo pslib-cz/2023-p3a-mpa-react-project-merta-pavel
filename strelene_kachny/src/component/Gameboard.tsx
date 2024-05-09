@@ -32,27 +32,38 @@ const Gameboard = () => {
     }
     dispatch({ type: ActionCard.DOUBLE_THREAT, index: index1});
   };
+  const handleStartGame = () => {
+    startGame(4);
+  };
+  
+  const handlePlayAgain = () => {
+    console.log('handlePlayAgain called');
+    startGame(4);
+    console.log('startGame called');
+  };
+
   return (
     <div>
       <h1>Gameboard</h1>
-      <button onClick={(_e) => {
-        startGame(4);
-      }}>Start game</button>
+      {state.winner === undefined ? (
+        <button onClick={handleStartGame}>Start game</button>
+      ) : (
+        <button onClick={handlePlayAgain}>Play Again</button>
+      )}
       <button onClick={() => setShowShootOptions(!showShootOptions)}>SHOOT</button>
       <button onClick={(_e) => {
         dispatch({ type: ActionCard.AIM, index: selectedPosition ?? 0});
       }}>AIM</button>
       {showShootOptions && (
         <>
-              {aimPositions.map((aimIndex) => (
-        <button key={aimIndex} onClick={() => handleShoot(aimIndex)}>Shoot at position {aimIndex + 1}</button>
-      ))}
+          {aimPositions.map((aimIndex) => (
+            <button key={aimIndex} onClick={() => handleShoot(aimIndex)}>Shoot at position {aimIndex + 1}</button>
+          ))}
         </>
-      )
-        }
-<button onClick={(_e) => {
-  handleDoubleShoot(0, 1); // Replace 0 and 1 with the actual positions
-}}>Double threat</button>
+      )}
+      <button onClick={(_e) => {
+        handleDoubleShoot(0, 1); // Replace 0 and 1 with the actual positions
+      }}>Double threat</button>
       <button onClick={(_e) => {
         dispatch({ type: ActionCard.DOUBLE_SHOT, index: 0, duck_id: state.deck[0]?.id ?? 0, duck_id2: state.deck[1]?.id ?? 0 });
       }}>Double shot</button>
@@ -79,7 +90,8 @@ const Gameboard = () => {
       }}>Turbo</button>
       {state.fields.map((field, index) => {
         return (
-<Field key={index} index={index} data={field} dispatch={dispatch} setSelectedPosition={setSelectedPosition} selectedPosition={selectedPosition} showAimOptions={showAimOptions} />        )
+          <Field key={index} index={index} data={field} dispatch={dispatch} setSelectedPosition={setSelectedPosition} selectedPosition={selectedPosition} showAimOptions={showAimOptions} />
+        )
       })}
     </div>
   )
@@ -91,23 +103,21 @@ const Field: React.FC<{ data: FieldData, index: number, dispatch: React.Dispatch
 
   return (
     <div className={styles.table}>
-      {gameState.winner === undefined ?
+      {gameState.winner === undefined ? (
         <div className={styles.table__cards}>
-        <p>Field</p>
-        <p>Duck: {duckColor}</p>
-        <img src={getduckImages(duckColor)} alt={`Duck of color ${duckColor}`} />
-        <button onClick={() => {
-          setSelectedPosition(index);
-        }}>Select</button>
-        {selectedPosition === index && <div>Selected</div>}
-        {data.aim ? "🎯" : ""}
-      </div>
-      :
-      <div>
-        <p>Winner: {gameState.winner}</p>
-      </div>
-      }
-    </div>
+          <p>Field</p>
+          <p>Duck: {duckColor}</p>
+          <img src={getduckImages(duckColor)} alt={`Duck of color ${duckColor}`} />
+          <button onClick={() => {
+            setSelectedPosition(index);
+          }}>Select</button>
+          {selectedPosition === index && <div>Selected</div>}
+          {selectedPosition === index &&  <img src="\src\img\rest\Terc.jpg" alt="Aim icon" />}
+        </div>
+      ) : (
+        index === 0 && <div><h2>Winner: Player {gameState.winner}</h2></div>
+      )}
+    </div> 
   )
 }
 
