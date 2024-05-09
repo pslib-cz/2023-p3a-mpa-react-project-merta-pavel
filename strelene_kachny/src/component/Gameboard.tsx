@@ -112,7 +112,7 @@ const Field: React.FC<{ data: FieldData, index: number, dispatch: React.Dispatch
             setSelectedPosition(index);
           }}>Select</button>
           {selectedPosition === index && <div>Selected</div>}
-          {selectedPosition === index &&  <img src="\src\img\rest\Terc.jpg" alt="Aim icon" />}
+          {data.aim ? <img src="\src\img\rest\Terc.jpg" alt="Aim icon" /> : ""}
         </div>
       ) : (
         index === 0 && <div><h2>Winner: Player {gameState.winner}</h2></div>
