@@ -3,6 +3,7 @@ import { GameContext } from "../provider/provider";
 import { ActionCard, Field as FieldData } from "../types";
 import {  getduckImages } from "../data/data.tsx";
 import styles from "./Gameboard.module.css";
+import { Link } from "react-router-dom";
 
 
 const Gameboard = () => {
@@ -37,16 +38,36 @@ const Gameboard = () => {
     console.log('startGame called');
   };
 
+  const handleExitGame = () => {
+    dispatch({ type: ActionCard.RESET });
+    console.log('handleExitGame called');
+  }
+
   return (
     <div>
     <h1>Gameboard</h1>
     {!state.isRunning && state.winner === undefined ? 
     <button onClick={handleStartGame}>{'Start Game'}</button> : ''}
-    
+
+    {state.isRunning && state.winner === undefined ?
+    <Link to="/">
+    <button onClick={handleExitGame}>
+      Exit Game
+    </button>
+    </Link> : ''}
+
     {state.winner !== undefined ?
     <button onClick={handlePlayAgain}>
       {'Play again'}
     </button> : ''}
+
+    {state.winner !== undefined ?
+    <Link to="/">
+    <button onClick={handleExitGame}>
+      Exit Game
+    </button>
+    </Link> : ''}
+
       <button onClick={() => setShowShootOptions(!showShootOptions)}>SHOOT</button>
       <button onClick={(_e) => {
         dispatch({ type: ActionCard.AIM, index: selectedPosition ?? 0});
