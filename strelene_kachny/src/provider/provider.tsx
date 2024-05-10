@@ -1,5 +1,6 @@
 import React, { createContext, useReducer } from 'react';
 import { ActionCard, Color, Duck, GameState, Player } from '../types';
+import { act } from 'react-dom/test-utils';
 
 function getNthEnumValue<T extends object>(enumObject: T, index: number): T[keyof T] | undefined {
   const keys = Object.keys(enumObject).filter(key => typeof enumObject[key as keyof T] === 'number');
@@ -23,7 +24,7 @@ type GameAction =
   | { type: ActionCard.AIM_RIGHT; index: number }
   | { type: ActionCard.MISS; index: number; duck_id?: number}
   | { type: ActionCard.DIVOKEJ_BILL; index: number; duck_id?: number }
-  | { type: ActionCard.ADD_DUCKS; players: number }
+  | { type: ActionCard.ADD_DUCKS }
   | { type: ActionCard.SHUFFLE }
   | { type: ActionCard.MARCH; }
   | { type: ActionCard.LEHARO; index: number }
@@ -31,7 +32,11 @@ type GameAction =
   | { type: ActionCard.TURBODUCK; index: number }
   | { type: ActionCard.AIM_POSITION_SELECT; position: number }
   | { type: ActionCard.RESET;}
-  | { type: ActionCard.SET_PLAYER_NAME; player: number; name: string; };
+  | { type: ActionCard.SET_PLAYER_NAME; player: number; name: string; }
+  | { type: ActionCard.SET_PLAYER_COUNT; playerCount: number; }
+  | { type: ActionCard.CREATE_ACTION_CARD_DECK; deck_properties: {type: ActionCard, count: number}[]}
+  | { type: ActionCard.DRAW_ACTION_CARD; player: Color; deck_length: number}
+;
 
 // Define the reducer function
 const gameReducer = (state: GameState, action: GameAction): GameState => {
@@ -52,6 +57,7 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
         undefined,
         undefined,
       ],
+      actionCardDeck: [],
       players: [],
       winner: undefined,
       isRunning: false,
@@ -68,6 +74,36 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
     }
   }
   switch (action.type) {
+    case ActionCard.DRAW_ACTION_CARD:
+      const stateCopy = JSON.parse(JSON.stringify(state)) as GameState;
+      if (stateCopy.actionCardDeck.length !== action.deck_length) return state;
+      const result = {
+        ...stateCopy,
+        players: stateCopy.players.map((player, _i) => {
+          const card = stateCopy.actionCardDeck.splice(0, 1)[0];
+          return player.color === action.player ? { ...player, hand: [...player.hand, card] } : player;
+        }),
+      };
+      console.log(result)
+      return result; 
+    case ActionCard.CREATE_ACTION_CARD_DECK:
+      const newActionCardDeck = [] as (ActionCard)[];
+      for (let deck_property of action.deck_properties) {
+        for (let i = 0; i < deck_property.count; i++) {
+          newActionCardDeck.push(deck_property.type);
+        }
+      }
+      return {
+        ...state,
+        actionCardDeck: newActionCardDeck,
+      }
+    case ActionCard.SET_PLAYER_NAME:
+      return {
+        ...state,
+        players: state.players.map((player, index) =>
+          index === action.player ? { ...player, name: action.name } : player
+        ),
+      };
     case ActionCard.AIM:
       return {
         ...state,
@@ -231,16 +267,21 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
             index === action.index ? { ...field, aim: false } : field
           ),
         };
+
+    case ActionCard.SET_PLAYER_COUNT:
+      const newPlayers = Array.from({ length: action.playerCount }, (_, i) => ({
+        color: getNthEnumValue(Color, i) as Color,
+        deadDucks: 0,
+        name: '',
+        hand: [],
+      })) as Player[];
+      return {
+        ...state,
+        players: newPlayers,
+      };
     case ActionCard.ADD_DUCKS:
   // Create new players and ducks
-  const newPlayers = Array.from({ length: action.players }, (_, i) => {
-    const color = getNthEnumValue(Color, i);
-    // Skip if color is undefined
-    if (color === undefined) return null;
-    return { color, deadDucks: 0 };
-  }).filter(player => player !== null) as Player[];  // Filter out nulls and assert the remaining items are Players
-
-  const newDucks = newPlayers.flatMap(player =>
+  const newDucks = state.players.flatMap(player =>
     Array.from({ length: 5 }, (_, i) => ({ color: player.color, id: i + 1 }))
   ) as (Duck | undefined)[];  // Assert the result is an array of Ducks
   for (let i = 0; i < 5; i++){
@@ -248,7 +289,6 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
   }
   return {
     ...state,
-    players: newPlayers,
     deck: newDucks,
   };
   
@@ -259,10 +299,18 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
           const j = Math.floor(Math.random() * (i + 1));
           [shuffledDeck[i], shuffledDeck[j]] = [shuffledDeck[j], shuffledDeck[i]];
         }
-  
+
+        // Shuffle the action card deck
+        const shuffledActionCardDeck = [...state.actionCardDeck];
+        for (let i = shuffledActionCardDeck.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [shuffledActionCardDeck[i], shuffledActionCardDeck[j]] = [shuffledActionCardDeck[j], shuffledActionCardDeck[i]];
+        }
+
         return {
           ...state,
           deck: shuffledDeck,
+          actionCardDeck: shuffledActionCardDeck,
         };
         case ActionCard.AIM_POSITION_SELECT:
           return {
@@ -296,13 +344,15 @@ const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
       undefined,
       undefined,
     ],
+    actionCardDeck: [],
     players: [],
     winner: undefined,
     isRunning: false,
   });
 
   const startGame = async (playerCount: number) => {
-    dispatch({ type: ActionCard.ADD_DUCKS, players: playerCount});
+    dispatch({ type: ActionCard.ADD_DUCKS});
+    dispatch({ type: ActionCard.CREATE_ACTION_CARD_DECK, deck_properties: [{type: ActionCard.AIM, count: 5}, {type: ActionCard.SHOOT, count: 5}]});
     dispatch({ type: ActionCard.SHUFFLE });
   };
 

@@ -33,6 +33,28 @@ const Gameboard = () => {
 
   return (
     <div>
+      {state.players && state.players.map((player, index) => ( // Add a check for state.players before mapping over it
+        <div key={index}>
+          <h2>Player {index + 1}</h2>
+          <p>Player name: {player.name}</p>
+          <p>Player color: {player.color}</p>
+          <p>Player dead ducks: {5-state.deck.filter((d) => {
+            return d?.color === player.color;
+          }).length}</p>
+          <button onClick={() => {
+            dispatch({ type: ActionCard.DRAW_ACTION_CARD, player: player.color, deck_length: state.actionCardDeck.length});
+            console.log(state)
+          }}>Draw card</button>
+          <p>Player hand: {player.hand.map((card, index) => (
+            <span key={index}>{card}, </span>
+          ))}</p>
+        </div>
+      ))}
+      {state.actionCardDeck.map((actionCard, index) => (
+        <div key={index}>
+          <p>Action card: {actionCard}</p>
+        </div>
+      ))}
     <h1>Gameboard</h1>
     {state.isRunning && state.winner === undefined ?
     <Link to="/">

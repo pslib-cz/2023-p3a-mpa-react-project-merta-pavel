@@ -1,6 +1,7 @@
 export declare type GameState = {
     fields: Field[];
     deck: (Duck|undefined)[];
+    actionCardDeck: ActionCard[];
     players: Player[];
     winner: Color | undefined;
     isRunning: boolean;
@@ -42,10 +43,14 @@ export enum ActionCard {
     SHUFFLE = 500,
     RESET = 600,
     SET_PLAYER_NAME = 700,
+    SET_PLAYER_COUNT = 800,
+    CREATE_ACTION_CARD_DECK = 900,
+    DRAW_ACTION_CARD = 1000,
 };
 
 export declare type Player = {
     color: Color;
     deadDucks: number; //just for faster and easier UI rendering, not used in the game logic
     name: string;
+    hand: ActionCard[];
 };
