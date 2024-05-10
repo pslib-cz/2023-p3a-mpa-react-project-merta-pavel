@@ -29,10 +29,33 @@ type GameAction =
   | { type: ActionCard.LEHARO; index: number }
   | { type: ActionCard.CHVATAM; index: number }
   | { type: ActionCard.TURBODUCK; index: number }
-  | { type: ActionCard.AIM_POSITION_SELECT; position: number };
+  | { type: ActionCard.AIM_POSITION_SELECT; position: number }
+  | { type: ActionCard.RESET;};
 
 // Define the reducer function
 const gameReducer = (state: GameState, action: GameAction): GameState => {
+  if (action.type === ActionCard.RESET) {
+    return {
+      fields: [
+        { aim: false },
+        { aim: false },
+        { aim: false },
+        { aim: false },
+        { aim: false },
+        { aim: false },
+      ],
+      deck: [
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+      ],
+      players: [],
+      winner: undefined,
+      isRunning: false,
+    };
+  }
   if (state.deck.length === 6) {
     for (let card of state.deck) {
       if (card !== undefined) {
@@ -181,6 +204,7 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
           return {
             ...state,
             deck: newDeckForTurbo,
+            isRunning: true,
           };
     case ActionCard.DIVOKEJ_BILL:
         // Aim
@@ -273,10 +297,11 @@ const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     ],
     players: [],
     winner: undefined,
+    isRunning: false,
   });
 
   const startGame = async (playerCount: number) => {
-    dispatch({ type: ActionCard.ADD_DUCKS, players: playerCount });
+    dispatch({ type: ActionCard.ADD_DUCKS, players: playerCount});
     dispatch({ type: ActionCard.SHUFFLE });
   };
 

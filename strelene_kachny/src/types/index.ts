@@ -3,6 +3,7 @@ export declare type GameState = {
     deck: (Duck|undefined)[];
     players: Player[];
     winner: Color | undefined;
+    isRunning: boolean;
 };
 
 export declare type Field = {
@@ -36,11 +37,10 @@ export enum ActionCard {
     LEHARO = 9,
     CHVATAM = 10,
     TURBODUCK = 11,
-    //Kachni tanec je shuffle
-    //Na rosambo vyuzit predesle karty pohybu
+    AIM_POSITION_SELECT = 12,
     ADD_DUCKS = 400,
     SHUFFLE = 500,
-    AIM_POSITION_SELECT = 12,
+    RESET = 600,
 };
 
 export declare type Player = {

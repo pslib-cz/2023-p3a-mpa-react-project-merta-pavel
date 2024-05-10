@@ -24,19 +24,14 @@ const Gameboard = () => {
     }
     dispatch({ type: ActionCard.SHOOT, index: selectedPosition, duck_id: state.deck[selectedPosition]?.id });
   };
-  
-  const handleDoubleShoot = (index1: number, index2: number) => {
-    if (Math.abs(index1 - index2) !== 1) {
-      alert("The positions must be adjacent.");
-      return;
-    }
-    dispatch({ type: ActionCard.DOUBLE_THREAT, index: index1});
-  };
+
   const handleStartGame = () => {
     startGame(4);
+    state.isRunning = true;
   };
   
   const handlePlayAgain = () => {
+    dispatch({ type: ActionCard.RESET });
     console.log('handlePlayAgain called');
     startGame(4);
     console.log('startGame called');
@@ -44,12 +39,14 @@ const Gameboard = () => {
 
   return (
     <div>
-      <h1>Gameboard</h1>
-      {state.winner === undefined ? (
-        <button onClick={handleStartGame}>Start game</button>
-      ) : (
-        <button onClick={handlePlayAgain}>Play Again</button>
-      )}
+    <h1>Gameboard</h1>
+    {!state.isRunning && state.winner === undefined ? 
+    <button onClick={handleStartGame}>{'Start Game'}</button> : ''}
+    
+    {state.winner !== undefined ?
+    <button onClick={handlePlayAgain}>
+      {'Play again'}
+    </button> : ''}
       <button onClick={() => setShowShootOptions(!showShootOptions)}>SHOOT</button>
       <button onClick={(_e) => {
         dispatch({ type: ActionCard.AIM, index: selectedPosition ?? 0});
@@ -62,7 +59,7 @@ const Gameboard = () => {
         </>
       )}
       <button onClick={(_e) => {
-        handleDoubleShoot(0, 1); // Replace 0 and 1 with the actual positions
+        dispatch({type: ActionCard.DOUBLE_THREAT, index: selectedPosition ?? 0}) // Replace 0 and 1 with the actual positions
       }}>Double threat</button>
       <button onClick={(_e) => {
         dispatch({ type: ActionCard.DOUBLE_SHOT, index: 0, duck_id: state.deck[0]?.id ?? 0, duck_id2: state.deck[1]?.id ?? 0 });
