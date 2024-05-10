@@ -30,7 +30,8 @@ type GameAction =
   | { type: ActionCard.CHVATAM; index: number }
   | { type: ActionCard.TURBODUCK; index: number }
   | { type: ActionCard.AIM_POSITION_SELECT; position: number }
-  | { type: ActionCard.RESET;};
+  | { type: ActionCard.RESET;}
+  | { type: ActionCard.SET_PLAYER_NAME; player: number; name: string; };
 
 // Define the reducer function
 const gameReducer = (state: GameState, action: GameAction): GameState => {

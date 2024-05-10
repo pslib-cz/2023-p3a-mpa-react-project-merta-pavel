@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 
 const Gameboard = () => {
-  const { state, startGame, dispatch } = useContext(GameContext);
+  const { state, dispatch } = useContext(GameContext);
   const [selectedPosition, setSelectedPosition] = useState<number | null>(null); // Stav pro uchování vybrané pozice pro střelbu
   const [showAimOptions, _setShowAimOptions] = useState(false); // Declare showAimOptions variable
   const [showShootOptions, setShowShootOptions] = useState(false); // Declare showShootOptions variable
@@ -26,18 +26,6 @@ const Gameboard = () => {
     dispatch({ type: ActionCard.SHOOT, index: selectedPosition, duck_id: state.deck[selectedPosition]?.id });
   };
 
-  const handleStartGame = () => {
-    startGame(4);
-    state.isRunning = true;
-  };
-  
-  const handlePlayAgain = () => {
-    dispatch({ type: ActionCard.RESET });
-    console.log('handlePlayAgain called');
-    startGame(4);
-    console.log('startGame called');
-  };
-
   const handleExitGame = () => {
     dispatch({ type: ActionCard.RESET });
     console.log('handleExitGame called');
@@ -46,20 +34,12 @@ const Gameboard = () => {
   return (
     <div>
     <h1>Gameboard</h1>
-    {!state.isRunning && state.winner === undefined ? 
-    <button onClick={handleStartGame}>{'Start Game'}</button> : ''}
-
     {state.isRunning && state.winner === undefined ?
     <Link to="/">
     <button onClick={handleExitGame}>
       Exit Game
     </button>
     </Link> : ''}
-
-    {state.winner !== undefined ?
-    <button onClick={handlePlayAgain}>
-      {'Play again'}
-    </button> : ''}
 
     {state.winner !== undefined ?
     <Link to="/">

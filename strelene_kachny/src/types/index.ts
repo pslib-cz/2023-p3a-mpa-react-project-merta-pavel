@@ -41,9 +41,11 @@ export enum ActionCard {
     ADD_DUCKS = 400,
     SHUFFLE = 500,
     RESET = 600,
+    SET_PLAYER_NAME = 700,
 };
 
 export declare type Player = {
     color: Color;
     deadDucks: number; //just for faster and easier UI rendering, not used in the game logic
+    name: string;
 };
