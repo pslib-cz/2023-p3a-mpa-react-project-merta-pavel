@@ -1,4 +1,120 @@
-/*.table__cards{
+.disabled {
+    opacity: 0.5; /* Změní průhlednost obrázku */
+    pointer-events: none; /* Zabraňuje interakci s obrázkem */
+}
+
+.Player{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 1em;
+}
+
+/*.game{
     display: flex;
     flex-direction: row;
-}*/
+    align-items: center;
+    margin: 1em;
+
+} */
+
+.allPositions{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 1em;
+}
+
+.field{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 1em;
+}
+
+.Player__Text{
+    color: white;
+    margin: 0 1em;
+}
+
+.cards{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1em;
+}
+
+.bar{
+    display: flex;
+    flex-direction: column;
+}
+
+.table__cards{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+section{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+img{
+    padding: .1em;
+}
+
+.table{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 1em;
+
+}
+
+@media screen and (min-width: 600px) {
+    .Player{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 1em;
+    }
+
+    .Player__Text{
+        color: white;
+        margin: 0 1em;
+    }
+
+    .cards{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 1em;
+    }
+
+    .bar{
+        display: flex;
+        flex-direction: row;
+    }
+
+    .table__cards{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    section{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    img{
+        padding: .5em;
+    }
+}

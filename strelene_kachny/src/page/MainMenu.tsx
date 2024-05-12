@@ -5,11 +5,11 @@ import styles from './MainMenu.module.css';
 const MainMenu: React.FC = () => {
   return (
     <div className={styles.Menu}>
-    <h1>Hlavní Menu</h1>
+    <h1 className={styles.Text}>Hlavní Menu</h1>
   <Link to="/settings">
-    <div>
+    <button className={styles.Button}>
       Play Game
-    </div>
+    </button>
   </Link>
   </div>
   );
