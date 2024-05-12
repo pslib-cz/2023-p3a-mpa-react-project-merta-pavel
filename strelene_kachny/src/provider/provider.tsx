@@ -322,17 +322,23 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
             ),
           };
           case ActionCard.USE_CARD:
-// After a card is used, increment currentPlayer
-let nextPlayer = state.currentPlayer + 1;
-// If we've gone past the end of the array, wrap around to the first player
-if (nextPlayer >= state.players.length) {
-  nextPlayer = 0;
-}
-
-return {
-  ...state,
-  currentPlayer: nextPlayer,
-};
+            // After a card is used, increment currentPlayer
+            let nextPlayer = state.currentPlayer + 1;
+            // If we've gone past the end of the array, wrap around to the first player
+            if (nextPlayer >= state.players.length) {
+              nextPlayer = 0;
+            }
+            // Remove the used card from the current player's hand
+            const newHand = state.players[state.currentPlayer].hand.filter((_, cardIndex) => cardIndex !== action.cardIndex);
+          
+            return {
+              ...state,
+              currentPlayer: nextPlayer,
+              players: state.players.map((player, index) =>
+                index === state.currentPlayer ? { ...player, hand: newHand } : player
+              ),
+            };
+          
     default:
       return state;
   }
