@@ -5,6 +5,7 @@ export declare type GameState = {
     players: Player[];
     winner: Color | undefined;
     isRunning: boolean;
+    currentPlayer: Color;
 };
 
 export declare type Field = {
@@ -46,6 +47,7 @@ export enum ActionCard {
     SET_PLAYER_COUNT = 800,
     CREATE_ACTION_CARD_DECK = 900,
     DRAW_ACTION_CARD = 1000,
+    USE_CARD = 1100,
 };
 
 export declare type Player = {

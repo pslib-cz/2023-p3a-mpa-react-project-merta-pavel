@@ -1,6 +1,5 @@
 import React, { createContext, useReducer } from 'react';
 import { ActionCard, Color, Duck, GameState, Player } from '../types';
-import { act } from 'react-dom/test-utils';
 
 function getNthEnumValue<T extends object>(enumObject: T, index: number): T[keyof T] | undefined {
   const keys = Object.keys(enumObject).filter(key => typeof enumObject[key as keyof T] === 'number');
@@ -12,6 +11,7 @@ interface GameContextState {
   state: GameState;
   startGame: (playerCount: number) => Promise<void>;
   dispatch: React.Dispatch<GameAction>;
+  currentPlayer: number,
 }
 
 // Define the action types
@@ -36,6 +36,7 @@ type GameAction =
   | { type: ActionCard.SET_PLAYER_COUNT; playerCount: number; }
   | { type: ActionCard.CREATE_ACTION_CARD_DECK; deck_properties: {type: ActionCard, count: number}[]}
   | { type: ActionCard.DRAW_ACTION_CARD; player: Color; deck_length: number}
+  | { type: ActionCard.USE_CARD; player: number; cardIndex: number}
 ;
 
 // Define the reducer function
@@ -61,6 +62,7 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
       players: [],
       winner: undefined,
       isRunning: false,
+      currentPlayer: Color.BLUE,
     };
   }
   if (state.deck.length === 6) {
@@ -319,6 +321,18 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
               index === action.position ? { ...field, aim: true } : field
             ),
           };
+          case ActionCard.USE_CARD:
+// After a card is used, increment currentPlayer
+let nextPlayer = state.currentPlayer + 1;
+// If we've gone past the end of the array, wrap around to the first player
+if (nextPlayer >= state.players.length) {
+  nextPlayer = 0;
+}
+
+return {
+  ...state,
+  currentPlayer: nextPlayer,
+};
     default:
       return state;
   }
@@ -348,11 +362,13 @@ const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     players: [],
     winner: undefined,
     isRunning: false,
+    currentPlayer: Color.BLUE,
   });
 
   const startGame = async (playerCount: number) => {
     dispatch({ type: ActionCard.ADD_DUCKS});
-    dispatch({ type: ActionCard.CREATE_ACTION_CARD_DECK, deck_properties: [{type: ActionCard.AIM, count: 5}, {type: ActionCard.SHOOT, count: 5}]});
+    dispatch({ type: ActionCard.CREATE_ACTION_CARD_DECK, 
+      deck_properties: [{type: ActionCard.AIM, count: 5}, {type: ActionCard.SHOOT, count: 5}, {type: ActionCard.DOUBLE_THREAT, count: 5}, {type: ActionCard.DOUBLE_SHOT, count: 5}, {type: ActionCard.MISS, count: 5}, {type: ActionCard.AIM_LEFT, count: 5}, {type: ActionCard.AIM_RIGHT, count: 5}, {type: ActionCard.DIVOKEJ_BILL, count: 5}, {type: ActionCard.MARCH, count: 5}, {type: ActionCard.LEHARO, count: 5}, {type: ActionCard.CHVATAM, count: 5}, {type: ActionCard.TURBODUCK, count: 5}]});
     dispatch({ type: ActionCard.SHUFFLE });
   };
 
@@ -360,6 +376,7 @@ const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     state: state,
     startGame: startGame,
     dispatch: dispatch,
+    currentPlayer: 0,
   };
 
   return <GameContext.Provider value={contextValue}>{children}</GameContext.Provider>;
