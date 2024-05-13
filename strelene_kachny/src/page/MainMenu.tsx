@@ -7,11 +7,18 @@ const MainMenu: React.FC = () => {
     <div className={styles.Menu}>
       <h1 className={styles.Text}>Střelené Kachny</h1>
     <h2 className={styles.Text}>Hlavní Menu</h2>
+    <div className={styles.Menu__buttons}>
   <Link to="/settings">
     <button className={styles.Button}>
       Play Game
     </button>
   </Link>
+  <Link to="/instructions">
+    <button className={styles.Button}>
+      Instructions
+    </button>
+  </Link>
+  </div>
   </div>
   );
 };

@@ -4,6 +4,7 @@ import './App.css';
 import Gameboard from './component/Gameboard';
 import Settings from './page/Settings';
 import { GameProvider } from './provider/provider.tsx'
+import Instructions from './page/Instructions';
 
 const App = () => {
 
@@ -14,6 +15,7 @@ const App = () => {
           <Route path="/" element={<MainMenu />} />,
           <Route path="/settings" element={<Settings />} />,
           <Route path="/component" element={<Gameboard />} />,
+          <Route path="/instructions" element={<Instructions />} />
         </Routes>
       </Router>
     </GameProvider>

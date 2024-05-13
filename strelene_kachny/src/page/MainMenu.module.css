@@ -23,3 +23,26 @@ body {
 p, h1, h2{
     text-shadow: 2px 2px black;
 }   
+
+.Menu__buttons{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.Menu__buttons button{
+    margin: 1em;
+}
+
+.Menu__buttons__a{
+    color: white;
+    border-radius: 5px;
+    border: black;
+    background-color: #1a1a1a;
+    display: flex;
+    height: 35px;
+    width: 180px;
+    justify-content: center;
+    align-items: center;
+}
