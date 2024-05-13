@@ -204,12 +204,12 @@ const Field: React.FC<{ data: FieldData, index: number, dispatch: React.Dispatch
     {gameState.winner === undefined ? (
       <div className={styles.table__cards}> 
         <p>Duck: {duckColor}</p>
-        <img src="\src\img\rest\Oblaka.jpg" alt="Cloud"/>
+        <img src="./img/rest/Oblaka.jpg" alt="Cloud"/>
         <img src={getduckImages(duckColor)} alt={`Duck of color ${duckColor}` } onClick={() => {
                     setSelectedPosition(index);
         }}/>
         {selectedPosition === index && <div>Selected</div>}
-        {data.aim ? <img src="\src\img\rest\Terc.jpg" alt="Aim icon" /> : ""}
+        {data.aim ? <img src="./img/rest/Terc.jpg" alt="Aim icon" /> : ""}
       </div>
     ) : (
       index === 0 && <div className={styles.message}><h2>Winner: Player color {gameState.winner}</h2></div>

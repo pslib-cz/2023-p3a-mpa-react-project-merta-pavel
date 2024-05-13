@@ -1,25 +1,25 @@
 import { Color } from "../types";
-import blue from "../img/ducks/BLUE.jpg";
-import green from "../img/ducks/GREEN.jpg";
-import yellow from "../img/ducks/YELLOW.jpg";
-import purple from "../img/ducks/PURPLE.jpg";
-import pink from "../img/ducks/PINK.jpg";
-import orange from "../img/ducks/ORANGE.jpg";
-import empty from "../img/ducks/Empty.jpg";
-import zamirit from "../img/action/Zamirit.jpg";
-import vystrelit from "../img/action/Vystrelit.jpg";
-import dvojita_trefa from "../img/action/Dvojita Trefa.jpg";
-import dvojita_hrozba from "../img/action/Dvojita hrozba.jpg";
-import jejda_vedle from "../img/action/Jejda Vedle.jpg";
-import strilej_vlevo from "../img/action/Strilej Vlevo.jpg";
-import strilej_vpravo from "../img/action/Strilej Vpravo.jpg";
-import divokej_bill from "../img/action/Divokej Bill.jpg";
-import kachni_pochod from "../img/action/Kachni pochod.jpg";
-import leharo from "../img/action/Leharo.jpg";
-import chvatam from "../img/action/Chvatam.jpg";
-import turbokachna from "../img/action/Turbokachna.jpg";
-import background from "../img/rest/Background.jpg";
-import shuffle from "../img/action/Kachni Tanec.jpg";
+import blue from "/img/rest/ducks/BLUE.jpg";
+import green from "/img/rest/ducks/GREEN.jpg";
+import yellow from "/img/rest/ducks/YELLOW.jpg";
+import purple from "/img/rest/ducks/PURPLE.jpg";
+import pink from "/img/rest/ducks/PINK.jpg";
+import orange from "/img/rest/ducks/ORANGE.jpg";
+import empty from "/img/rest/ducks/Empty.jpg";
+import zamirit from "/img/rest/action/Zamirit.jpg";
+import vystrelit from "/img/rest/action/Vystrelit.jpg";
+import dvojita_trefa from "/img/rest/action/Dvojita Trefa.jpg";
+import dvojita_hrozba from "/img/rest/action/Dvojita hrozba.jpg";
+import jejda_vedle from "/img/rest/action/Jejda Vedle.jpg";
+import strilej_vlevo from "/img/rest/action/Strilej Vlevo.jpg";
+import strilej_vpravo from "/img/rest/action/Strilej Vpravo.jpg";
+import divokej_bill from "/img/rest/action/Divokej Bill.jpg";
+import kachni_pochod from "/img/rest/action/Kachni pochod.jpg";
+import leharo from "/img/rest/action/Leharo.jpg";
+import chvatam from "/img/rest/action/Chvatam.jpg";
+import turbokachna from "/img/rest/action/Turbokachna.jpg";
+import background from "/img/rest/Background.jpg";
+import shuffle from "/img/rest/action/Kachni Tanec.jpg";
 
 export const duckImages: { [key in Color]: string } = {
     [Color.BLUE]: blue,

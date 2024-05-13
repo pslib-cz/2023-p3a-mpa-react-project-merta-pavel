@@ -15,8 +15,9 @@
     text-align: center;
     padding-bottom: 1.5em;
 }
+
 body {
-     background-image: url(../src/img/rest/rybnik.webp);
+     background-image: url(/img/rest/rybnik.webp);
 }
 
 p, h1, h2{
