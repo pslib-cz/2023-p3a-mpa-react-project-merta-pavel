@@ -1,7 +1,3 @@
-.Menu{
-    background-color: #5B0069;
-}
-
 .Button{
     color: white;
     border: none;
@@ -17,8 +13,12 @@
 .Text{
     color: white;
     text-align: center;
-    padding-bottom: 3em;
+    padding-bottom: 1.5em;
 }
 body {
-    background-color: #5B0069;
+     background-image: url(../src/img/rest/rybnik.webp);
 }
+
+p, h1, h2{
+    text-shadow: 2px 2px black;
+}   
