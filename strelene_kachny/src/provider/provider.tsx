@@ -67,7 +67,7 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
   }
   if (state.deck.length === 6) {
     for (let card of state.deck) {
-      if (card !== undefined) {
+      if (card !== undefined && card !== null) {
         return {
           ...state,
           winner: card.color,
@@ -371,10 +371,10 @@ const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     currentPlayer: Color.BLUE,
   });
 
-  const startGame = async (playerCount: number) => {
+  const startGame = async (_playerCount: number) => {
     dispatch({ type: ActionCard.ADD_DUCKS});
     dispatch({ type: ActionCard.CREATE_ACTION_CARD_DECK, 
-      deck_properties: [{type: ActionCard.AIM, count: 5}, {type: ActionCard.SHOOT, count: 5}, {type: ActionCard.DOUBLE_THREAT, count: 5}, {type: ActionCard.DOUBLE_SHOT, count: 5}, {type: ActionCard.MISS, count: 5}, {type: ActionCard.AIM_LEFT, count: 5}, {type: ActionCard.AIM_RIGHT, count: 5}, {type: ActionCard.DIVOKEJ_BILL, count: 5}, {type: ActionCard.MARCH, count: 5}, {type: ActionCard.LEHARO, count: 5}, {type: ActionCard.CHVATAM, count: 5}, {type: ActionCard.TURBODUCK, count: 5}]});
+      deck_properties: [{type: ActionCard.AIM, count: 15}, {type: ActionCard.SHOOT, count: 10}, {type: ActionCard.DOUBLE_THREAT, count: 8}, {type: ActionCard.DOUBLE_SHOT, count: 5}, {type: ActionCard.MISS, count: 5}, {type: ActionCard.AIM_LEFT, count: 15}, {type: ActionCard.AIM_RIGHT, count: 8}, {type: ActionCard.DIVOKEJ_BILL, count: 3}, {type: ActionCard.MARCH, count: 5}, {type: ActionCard.LEHARO, count: 5}, {type: ActionCard.CHVATAM, count: 7}, {type: ActionCard.TURBODUCK, count: 6}, {type: ActionCard.SHUFFLE, count: 5}]});
     dispatch({ type: ActionCard.SHUFFLE });
   };
 

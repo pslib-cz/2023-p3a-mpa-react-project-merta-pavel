@@ -10,45 +10,17 @@ const Gameboard = () => {
   const { state, dispatch } = useContext(GameContext);
   const [selectedPosition, setSelectedPosition] = useState<number | null>(null); // Stav pro uchování vybrané pozice pro střelbu
   const [showAimOptions, _setShowAimOptions] = useState(false); // Declare showAimOptions variable
-  const [showShootOptions, setShowShootOptions] = useState(false); // Declare showShootOptions variable
-  const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
-  const aimPositions = state.fields.reduce((acc: number[], field, index) => {
-    if (field.aim) {
-      acc.push(index);
-    }
-    return acc;
-  }, [] as number[]);
-
-  const handleNextTurn = () => {
-    setCurrentPlayerIndex((currentPlayerIndex + 1) % state.players.length);
-  };
-
-  const handleShoot = (index: number, player: Player) => {
-    if (selectedPosition === null) {
-      alert("Please select a position before shooting.");
-      return;
-    }
-    dispatch({ type: ActionCard.SHOOT, index: selectedPosition, duck_id: state.deck[selectedPosition]?.id });
-    dispatch({ type: ActionCard.USE_CARD, player: player.color, cardIndex: index });
-  };
-  
 
   const handleExitGame = () => {
     dispatch({ type: ActionCard.RESET });
     console.log('handleExitGame called');
   }
-
-
   const renderActionCard = (card: ActionCard, index: number, player: Player) => {
     switch (card) {
       case ActionCard.SHOOT:
         return (
           <img key={index} className={state.currentPlayer !== player.color ? styles.disabled : ""} onClick={() => {
-            if (selectedPosition !== null) {
-              dispatch({ type: ActionCard.SHOOT, index: selectedPosition, duck_id: state.deck[selectedPosition]?.id });
-            } else {
-              alert("Please select a position before shooting.");
-            }
+            dispatch({ type: ActionCard.SHOOT, index: selectedPosition ?? 0, duck_id: state.deck[selectedPosition ?? 0]?.id });
             dispatch({ type: ActionCard.USE_CARD, player: player.color, cardIndex: index });
           }} src={getActionCardImages[ActionCard.SHOOT]} alt="Shoot"
           />
@@ -154,13 +126,22 @@ const Gameboard = () => {
               }} src={getActionCardImages[ActionCard.MARCH]} alt="March"
               />
             );
+            case ActionCard.SHUFFLE:
+              return (
+                <img key={index} className={state.currentPlayer !== player.color ? styles.disabled : ""} onClick={() => {
+                  dispatch({ type: ActionCard.SHUFFLE });
+                  dispatch({ type: ActionCard.USE_CARD, player: player.color, cardIndex: index });
+                }} src={getActionCardImages[ActionCard.SHUFFLE]} alt="Shuffle"
+                />
+              );
         default:
           return state.currentPlayer === player.color ? <p key={index}>Unknown card</p> : <p key={index}>Unknown card</p>;
       }
   };
 
   return (
-    <div className={styles.game}>
+    <div className={styles.game}><div className={styles.up}>
+      
     {state.players && state.players.map((player, index) => {
       useEffect(() => {
         if (player.hand.length < 3) {
@@ -173,8 +154,9 @@ const Gameboard = () => {
         
       return (
         <div className={styles.bar} key={index}>
-          <div className={styles.Player}>
+          {state.currentPlayer === player.color && <>
           <h2>Player {index + 1}</h2>
+          <div className={styles.Player}>
           <p className={styles.Player__Text}>Player name: {player.name}</p>
           <p className={styles.Player__Text}>Player color: {player.color}</p>
           <p className={styles.Player__Text}>Player dead ducks: {5 - state.deck.filter((d) => {
@@ -184,10 +166,10 @@ const Gameboard = () => {
           <div>
           <p className={styles.cards}>{player.hand.map((card, index) => {
           return renderActionCard(card, index, player);})}</p>
-          </div>
+          </div></>}
     </div>
   );
-})}
+})}</div>
     {state.isRunning && state.winner === undefined ?
     <Link to="/">
     <button onClick={handleExitGame}>
@@ -201,12 +183,13 @@ const Gameboard = () => {
       Exit Game
     </button>
     </Link> : ''}
-
+    <div  className={styles.map}>
     {state.fields.map((field, index) => {
         return (
           <Field key={index} index={index} data={field} dispatch={dispatch} setSelectedPosition={setSelectedPosition} selectedPosition={selectedPosition} showAimOptions={showAimOptions} />
         );
       })}
+      </div>
     </div>
   );
 }
@@ -217,30 +200,21 @@ const Field: React.FC<{ data: FieldData, index: number, dispatch: React.Dispatch
   
 
   return (
-    <section className={styles.table}>
-      <div className={styles.tableRow}>
-        <div className={styles.tableCell}>
-          <p>Field</p>
-        </div>
-        <div className={styles.tableCell}>
-          <p>Duck: {duckColor}</p>
-        </div>
-        <div className={styles.tableCell}>
-          <img src={getduckImages(duckColor)} alt={`Duck of color ${duckColor}`} />
-        </div>
-        <div className={styles.tableCell}>
-          <button onClick={() => {
-            setSelectedPosition(index);
-          }}>Select</button>
-        </div>
-        <div className={styles.tableCell}>
-          {selectedPosition === index && <div>Selected</div>}
-        </div>
-        <div className={styles.tableCell}>
-          {data.aim && <img src="\src\img\rest\Terc.jpg" alt="Aim icon" />}
-        </div>
+    <div className={styles.table}>
+    {gameState.winner === undefined ? (
+      <div className={styles.table__cards}> 
+        <p>Duck: {duckColor}</p>
+        <img src="\src\img\rest\Oblaka.jpg" alt="Cloud"/>
+        <img src={getduckImages(duckColor)} alt={`Duck of color ${duckColor}` } onClick={() => {
+                    setSelectedPosition(index);
+        }}/>
+        {selectedPosition === index && <div>Selected</div>}
+        {data.aim ? <img src="\src\img\rest\Terc.jpg" alt="Aim icon" /> : ""}
       </div>
-    </section>
+    ) : (
+      index === 0 && <div><h2>Winner: Player {gameState.winner}</h2></div>
+    )}
+  </div> 
   );  
 }
 

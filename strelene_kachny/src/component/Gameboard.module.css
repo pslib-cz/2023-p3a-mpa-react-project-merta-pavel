@@ -1,120 +1,52 @@
-.disabled {
-    opacity: 0.5; /* Změní průhlednost obrázku */
-    pointer-events: none; /* Zabraňuje interakci s obrázkem */
+.cards img {
+    height: 100px;
+    margin-bottom: .25em;
+    margin-left: .25em;
+}
+
+.table__cards img{
+    height: 100px;
+    margin-bottom: .15em;
+    margin-left: .25em;
 }
 
 .Player{
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 1em;
 }
 
-/*.game{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin: 1em;
-
-} */
-
-.allPositions{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin: 1em;
-}
-
-.field{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin: 1em;
-}
-
-.Player__Text{
-    color: white;
-    margin: 0 1em;
-}
-
-.cards{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 1em;
-}
-
-.bar{
-    display: flex;
-    flex-direction: column;
-}
-
-.table__cards{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-section{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-img{
-    padding: .1em;
-}
-
-.table{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin: 1em;
-
-}
-
-@media screen and (min-width: 600px) {
-    .Player{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        margin: 1em;
-    }
-
-    .Player__Text{
-        color: white;
-        margin: 0 1em;
-    }
-
-    .cards{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin: 1em;
-    }
-
-    .bar{
+@media screen and (min-width: 500px) {
+    .map{
         display: flex;
         flex-direction: row;
     }
-
+    
     .table__cards{
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
+    }
+    
+    .cards img {
+        height: 120px;
     }
 
-    section{
+    .table__cards img{
+        height: 120px;
+    }
+
+    .Player{
         display: flex;
         flex-direction: row;
-        align-items: center;
+        justify-content: space-between;
+    }
+}
+
+@media screen and (min-width: 600px) {
+    .cards img {
+        height: 120px;
     }
 
-    img{
-        padding: .5em;
+    .table__cards img{
+        height: 120px;
     }
 }

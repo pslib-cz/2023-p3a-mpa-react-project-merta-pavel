@@ -19,6 +19,7 @@ import leharo from "../img/action/Leharo.jpg";
 import chvatam from "../img/action/Chvatam.jpg";
 import turbokachna from "../img/action/Turbokachna.jpg";
 import background from "../img/rest/Background.jpg";
+import shuffle from "../img/action/Kachni Tanec.jpg";
 
 export const duckImages: { [key in Color]: string } = {
     [Color.BLUE]: blue,
@@ -52,5 +53,6 @@ export const getActionCardImages: { [key: number]: string } = {
     [9]: leharo,
     [10]: chvatam,
     [11]: turbokachna,
+    [500]: shuffle,
     [5000]: background,
 };
