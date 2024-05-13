@@ -1,0 +1,64 @@
+.cards img {
+    height: 100px;
+    margin-bottom: .25em;
+    margin-left: .25em;
+}
+
+.table__cards img{
+    height: 100px;
+    margin-bottom: .15em;
+    margin-left: .25em;
+}
+
+.Player{
+    display: flex;
+    flex-direction: column;
+    margin-left: .5em;
+}
+
+.Player p{
+    margin-left: .5em;
+}
+
+.message{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+@media screen and (min-width: 500px) {
+    .map{
+        display: flex;
+        flex-direction: row;
+    }
+    
+    .table__cards{
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .cards img {
+        height: 120px;
+    }
+
+    .table__cards img{
+        height: 120px;
+    }
+
+    .Player{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+
+@media screen and (min-width: 600px) {
+    .cards img {
+        height: 120px;
+    }
+
+    .table__cards img{
+        height: 120px;
+    }
+}

@@ -1,0 +1,48 @@
+.Button{
+    color: white;
+    border: none;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.Text{
+    color: white;
+    text-align: center;
+    padding-bottom: 1.5em;
+}
+
+body {
+     background-image: url(/img/rest/rybnik.webp);
+}
+
+p, h1, h2{
+    text-shadow: 2px 2px black;
+}   
+
+.Menu__buttons{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.Menu__buttons button{
+    margin: 1em;
+}
+
+.Menu__buttons__a{
+    color: white;
+    border-radius: 5px;
+    border: black;
+    background-color: #1a1a1a;
+    display: flex;
+    height: 35px;
+    width: 180px;
+    justify-content: center;
+    align-items: center;
+}

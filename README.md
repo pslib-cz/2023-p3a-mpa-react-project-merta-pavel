@@ -2,7 +2,14 @@
 
 ## Téma
 
-Tady bude krátký a úderný popis o účelu, významu, funkcionalitě...
+Téma bude karetní hra Střelené kachny.
+
+## Figma návrh
+
+Návrh [zde](https://www.figma.com/file/nrdl8EQvB3672H8kDtot4A/MPA-Projekt?type=design&node-id=0%3A1&mode=design&t=5OtNJgM5UIEtVe6R-1)
+
+## Github Pages
+Pages [zde]( https://pslib-cz.github.io/2023-p3a-mpa-react-project-merta-pavel/)
 
 ## Odkazy pro vývoj
 
