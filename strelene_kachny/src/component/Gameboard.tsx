@@ -78,7 +78,7 @@ const Gameboard = () => {
         case ActionCard.AIM_RIGHT:
           return (
             <img key={index} className={state.currentPlayer !== player.color ? styles.disabled : ""} src={getActionCardImages[ActionCard.AIM_RIGHT]} alt="Aim Right" onClick={() => {
-              dispatch({ type: ActionCard.AIM_RIGHT, index: selectedPosition ?? 0, duck_id: state.deck[(selectedPosition ?? 0) +1]?.id ?? 0} as { type: ActionCard.AIM_RIGHT; index: number; duck_id: number })
+              dispatch({ type: ActionCard.AIM_RIGHT, index: selectedPosition ?? 0, duck_id: state.deck[selectedPosition ?? 0 -1]?.id ?? 0 } as { type: ActionCard.AIM_RIGHT; index: number; duck_id: number })
               dispatch({ type: ActionCard.USE_CARD, player: player.color, cardIndex: index });
             }}  
             />

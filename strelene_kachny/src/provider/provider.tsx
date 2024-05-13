@@ -20,8 +20,8 @@ type GameAction =
   | { type: ActionCard.SHOOT; index: number; duck_id?: number }
   | { type: ActionCard.DOUBLE_THREAT; index: number }
   | { type: ActionCard.DOUBLE_SHOT; index: number; duck_id?: number; duck_id2?: number}
-  | { type: ActionCard.AIM_LEFT; index: number }
-  | { type: ActionCard.AIM_RIGHT; index: number }
+  | { type: ActionCard.AIM_LEFT; index: number; duck_id?: number;}
+  | { type: ActionCard.AIM_RIGHT; index: number; duck_id?: number;}
   | { type: ActionCard.MISS; index: number; duck_id?: number}
   | { type: ActionCard.DIVOKEJ_BILL; index: number; duck_id?: number }
   | { type: ActionCard.ADD_DUCKS }
@@ -163,14 +163,14 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
       return {
         ...state,
         fields: state.fields.map((field, index) =>
-          index === action.index - 1 ? { ...field, aim: true } : { ...field, aim: false }
+          index === action.index - 1 ? { ...field, aim: true, duck_id: action.duck_id } : { ...field, aim: false }
         ),
       };
     case ActionCard.AIM_RIGHT:
       return {
         ...state,
         fields: state.fields.map((field, index) =>
-          index === action.index + 1 ? { ...field, aim: true } : { ...field, aim: false }
+          index === action.index + 1 ? { ...field, aim: true, duck_id: action.duck_id } : { ...field, aim: false }
         ),
       };
       case ActionCard.MISS:
