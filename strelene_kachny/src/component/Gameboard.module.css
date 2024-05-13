@@ -13,6 +13,18 @@
 .Player{
     display: flex;
     flex-direction: column;
+    margin-left: .5em;
+}
+
+.Player p{
+    margin-left: .5em;
+}
+
+.message{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
 }
 
 @media screen and (min-width: 500px) {

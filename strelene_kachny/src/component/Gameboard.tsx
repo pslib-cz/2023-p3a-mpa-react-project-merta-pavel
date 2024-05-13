@@ -212,7 +212,7 @@ const Field: React.FC<{ data: FieldData, index: number, dispatch: React.Dispatch
         {data.aim ? <img src="\src\img\rest\Terc.jpg" alt="Aim icon" /> : ""}
       </div>
     ) : (
-      index === 0 && <div><h2>Winner: Player {gameState.winner}</h2></div>
+      index === 0 && <div className={styles.message}><h2>Winner: Player color {gameState.winner}</h2></div>
     )}
   </div> 
   );  
