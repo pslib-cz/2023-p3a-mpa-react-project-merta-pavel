@@ -44,7 +44,12 @@ const Gameboard = () => {
         case ActionCard.DOUBLE_SHOT:
           return (
             <img key={index} className={state.currentPlayer !== player.color ? styles.disabled : ""} onClick={() => {
-              dispatch({ type: ActionCard.DOUBLE_SHOT, index: 0, duck_id: state.deck[0]?.id ?? 0, duck_id2: state.deck[1]?.id ?? 0 });
+              dispatch({ 
+                type: ActionCard.DOUBLE_SHOT, 
+                index: selectedPosition ?? 0, 
+                duck_id: state.deck[selectedPosition ?? 0]?.id ?? 0, 
+                duck_id2: state.deck[(selectedPosition ?? 0) + 1]?.id ?? 0 
+              }); 
               dispatch({ type: ActionCard.USE_CARD, player: player.color, cardIndex: index });
             }} src={getActionCardImages[ActionCard.DOUBLE_SHOT]} alt="Double Shot"
             />
