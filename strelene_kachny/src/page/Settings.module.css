@@ -5,11 +5,12 @@
     padding-bottom: 1.5em;
 }
 
-.input{
+.input__name{
     padding: 0.5em;
     margin: 0.5em;
     border-radius: 5px;
     border: none;
+    padding-right: 2em;
 }
 
 .input__button{
@@ -19,4 +20,8 @@
     border: none;
     color: white;
     cursor: pointer;
+}
+
+button{
+    margin-left: 2em;
 }

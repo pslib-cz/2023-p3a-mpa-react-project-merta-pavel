@@ -14,7 +14,7 @@ const Input = ({index}: IInputProps) => {
     const playRef = useRef<HTMLInputElement>(null);
     return (
         <div className={styles.input}>
-            <input ref={playRef}  type="text" placeholder="Jméno hráče"/>
+            <input ref={playRef} className={styles.input__name}  type="text" placeholder="Jméno hráče"/>
             <button className={styles.input__button} onClick={() => {
                 dispatch({type: ActionCard.SET_PLAYER_NAME, player: index, name: playRef.current?.value ?? ""});
             }}>Nastavit jméno</button>
